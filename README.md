@@ -13,6 +13,10 @@ The web part accepts a search query through a Dynamic Data connection, to furthe
 - Support for multiple pages
 - Improve $select field with predefined properties of the User object
 - Improve field mapping with the selected properties defined in $select
+- Toggle Live Person Card
+
+## Accompanying blog post
+I wrote a blog post covering more if the inner workings, you can find it at [SPFx People Search web part based on Microsoft Graph](https://blog.yannickreekmans.be/spfx-people-search-web-part-based-on-microsoft-graph/)
 
 ## Used SharePoint Framework Version 
 ![drop](https://img.shields.io/badge/version-1.11-green.svg)
