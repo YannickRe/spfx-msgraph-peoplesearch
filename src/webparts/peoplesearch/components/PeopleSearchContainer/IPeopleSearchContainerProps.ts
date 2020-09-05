@@ -58,4 +58,6 @@ export interface IPeopleSearchContainerProps {
     serviceScope: ServiceScope;
     
     updateWebPartTitle: (value: string) => void;
+
+    updateSearchParameter: (value: string) => void;
 }

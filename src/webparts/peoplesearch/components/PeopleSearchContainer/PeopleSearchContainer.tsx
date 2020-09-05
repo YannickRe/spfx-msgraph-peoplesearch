@@ -12,6 +12,8 @@ import {
   SpinnerSize,
   MessageBar,
   MessageBarType,
+  Icon,
+  IconButton,
 } from "office-ui-fabric-react";
 import { Overlay } from 'office-ui-fabric-react/lib/Overlay';
 import { ITheme } from '@uifabric/styling';
@@ -29,17 +31,18 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
     super(props);
 
     this.state = {
-      results: {
+      results: [{
         value: []
-      },
+      }],
       areResultsLoading: false,
       errorMessage: '',
-      hasError: false
+      hasError: false,
+      page: 1
     };
   }
 
   public async componentDidMount() {
-    await this._fetchPeopleSearchResults();
+    await this._fetchPeopleSearchResults(1, true);
   }
 
   /**
@@ -51,7 +54,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
    */
   public async componentDidUpdate(prevProps: IPeopleSearchContainerProps, prevState: IPeopleSearchContainerState) {
     if (!isEqual(this.props.searchService, prevProps.searchService)) {
-      await this._fetchPeopleSearchResults();
+      await this._fetchPeopleSearchResults(1, true);
     }
     else if (!isEqual(this.props, prevProps)) {
       if (this.state.hasError) {
@@ -73,7 +76,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
   public render(): React.ReactElement<IPeopleSearchContainerProps> {
 
     const areResultsLoading = this.state.areResultsLoading;
-    const items = this.state.results;
+    const items = this.state.results[this.state.page - 1];
     const hasError = this.state.hasError;
     const errorMessage = this.state.errorMessage;
 
@@ -83,6 +86,8 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
     let renderWebPartContent: JSX.Element = null;
     let renderOverlay: JSX.Element = null;
     let renderShimmerElements: JSX.Element = null;
+    let renderSearchBox: JSX.Element = null;
+    let renderPagination: JSX.Element = null;
 
     // Loading behavior
     if (areResultsLoading) {
@@ -94,7 +99,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
         </div>;
       } else {
         let templateContext = {
-          items: this.state.results,
+          items: items,
           showPagination: this.props.showPagination,
           showResultsCount: this.props.showResultsCount,
           showBlank: this.props.showBlank,
@@ -121,7 +126,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
       }
     } else {
       let templateContext = {
-        items: this.state.results,
+        items: items,
         showPagination: this.props.showPagination,
         showResultsCount: this.props.showResultsCount,
         showBlank: this.props.showBlank,
@@ -133,13 +138,35 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
 
       let renderSearchResultTemplate = this.props.templateService.getTemplateComponent(this.props.selectedLayout, templateContext);
 
-      let renderSearchBox = (this.props.searchParameterOption === SearchParameterOption.SearchBox) ? <PeopleSearchBox themeVariant={this.props.themeVariant} onSearch={async (searchQuery) => { this.props.searchService.searchParameter = searchQuery; await this._fetchPeopleSearchResults(); }} /> : null;
+      if (this.props.searchParameterOption === SearchParameterOption.SearchBox) {
+        renderSearchBox = <PeopleSearchBox themeVariant={this.props.themeVariant} onSearch={(searchQuery) => { this.props.updateSearchParameter(searchQuery); }} searchInputValue={this.props.searchService.searchParameter} />;
+      }
+
+      if (this.props.showPagination) {
+        let prevPageEl: JSX.Element = null;
+        let nextPageEl: JSX.Element = null;
+
+        if (this.hasPreviousPage()) {
+          prevPageEl = <IconButton onClick={async () => await this._fetchPeopleSearchResults(this.state.page - 1)} iconProps={{ iconName: 'DoubleChevronLeft8' }} />;
+        }
+
+        if (this.hasNextPage()) {
+          nextPageEl = <IconButton onClick={async () => await this._fetchPeopleSearchResults(this.state.page + 1)} iconProps={{ iconName: 'DoubleChevronRight8' }} />;
+        }
+
+        renderPagination =
+          <div className={styles.searchPagination}>
+              {prevPageEl}
+              {nextPageEl}
+          </div>;
+      }
 
       renderWebPartContent =
         <React.Fragment>
             {renderOverlay}
             {renderSearchBox}
             {renderSearchResultTemplate}
+            {renderPagination}
         </React.Fragment>;
     }
 
@@ -158,28 +185,58 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
     );
   }
 
-  private async _fetchPeopleSearchResults(): Promise<void> {
+  private hasPreviousPage(): Boolean {
+    return this.state.page > 1;
+  }
+
+  private hasNextPage(): Boolean {
+    return this.state.results.length > this.state.page || !isEmpty(this.state.results[this.state.results.length - 1]["@odata.nextLink"]);
+  }
+
+  private async _fetchPeopleSearchResults(page: number, reset: boolean = false): Promise<void> {
     try {
-      this.setState({
+      if (page === 1 && reset || isEmpty(this.state.results) || isEmpty(this.state.results[0]) || isEmpty(this.state.results[0].value)) {
+        this.setState({
           areResultsLoading: true,
           hasError: false,
           errorMessage: ""
-      });
+        });
 
-      const searchResults = await this.props.searchService.searchUsers();
-
-      this.setState({
-          results: searchResults,
-          areResultsLoading: false
-      });
+        let searchResults = await this.props.searchService.searchUsers();
+        this.setState({
+            results: [searchResults],
+            areResultsLoading: false,
+            page: 1
+        });
+      } else if (this.state.results.length === (page - 1)) {
+        if (this.hasNextPage()) {
+          this.setState({
+            areResultsLoading: true,
+            hasError: false,
+            errorMessage: ""
+          });
+          let nextLink = this.state.results[this.state.results.length - 1]["@odata.nextLink"];
+          let searchResults = await this.props.searchService.fetchPage(nextLink);
+          this.setState(prevState => ({
+            results: [...prevState.results, searchResults],
+            areResultsLoading: false,
+            page: page
+          }));
+        }
+      } else {
+        this.setState({
+          page: page
+        });
+      }
     } catch (error) {
       this.setState({
           areResultsLoading: false,
-          results: {
+          results: [{
             value: []
-          },
+          }],
           hasError: true,
-          errorMessage: error.message
+          errorMessage: error.message,
+          page: 1
       });
     }
   }

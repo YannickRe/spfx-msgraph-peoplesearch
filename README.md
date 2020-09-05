@@ -10,7 +10,6 @@ The web part accepts a search query through a Dynamic Data connection, to furthe
 
 ## Future improvements
 - Support loading Profile Pictures
-- Support for multiple pages
 - Improve $select field with predefined properties of the User object
 - Improve field mapping with the selected properties defined in $select
 - Toggle Live Person Card

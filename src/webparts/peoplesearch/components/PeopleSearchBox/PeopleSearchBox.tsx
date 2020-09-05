@@ -20,7 +20,7 @@ export class PeopleSearchBox extends React.Component<IPeopleSearchBoxProps,IPeop
     super(props);
 
     this.state = {
-        searchInputValue: '',
+        searchInputValue: props.searchInputValue,
         showClearButton: false,
     };
   }

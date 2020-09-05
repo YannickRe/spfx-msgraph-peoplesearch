@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
 import { Version, Environment, EnvironmentType } from "@microsoft/sp-core-library";
-import { DynamicProperty, ThemeProvider, IReadonlyTheme, ThemeChangedEventArgs } from '@microsoft/sp-component-base';
+import { ThemeProvider, IReadonlyTheme, ThemeChangedEventArgs } from '@microsoft/sp-component-base';
 import { BaseClientSideWebPart, IWebPartPropertiesMetadata } from "@microsoft/sp-webpart-base";
 import { DisplayMode } from "@microsoft/sp-core-library";
 import { isEqual } from '@microsoft/sp-lodash-subset';
@@ -92,6 +92,10 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
           serviceScope: this.context.serviceScope,
           updateWebPartTitle: (value: string) => {
             this.properties.webPartTitle = value;
+          },
+          updateSearchParameter: (value: string) => {
+            this.properties.searchParameter.setValue(value);
+            this.render();
           }
         } as IPeopleSearchContainerProps
       );
@@ -314,9 +318,9 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
     ] as IPropertyPaneChoiceGroupOption[];
 
     let stylingFields: IPropertyPaneField<any>[] = [
-      // PropertyPaneToggle('showPagination', {
-      //   label: strings.ShowPaginationControl,
-      // }),
+      PropertyPaneToggle('showPagination', {
+        label: strings.ShowPaginationControl,
+      }),
       PropertyPaneToggle('showBlank', {
           label: strings.ShowBlankLabel,
           checked: this.properties.showBlank,
