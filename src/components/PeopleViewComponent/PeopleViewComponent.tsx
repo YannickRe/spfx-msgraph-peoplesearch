@@ -37,7 +37,7 @@ export class PeopleViewComponent extends React.Component<IPeopleViewProps, IPeop
             for (let i = 0; i < ctx.items.value.length; i++) {
                 personaCards.push(<div className={styles.documentCardItem} key={i}>
                     <div className={styles.personaCard}>
-                        <PersonaCard serviceScope={ctx.serviceScope} fieldsConfiguration={ctx.peopleFields} item={ctx.items.value[i]} themeVariant={ctx.themeVariant} personaSize={ctx.personaSize} />
+                        <PersonaCard serviceScope={ctx.serviceScope} fieldsConfiguration={ctx.peopleFields} item={ctx.items.value[i]} themeVariant={ctx.themeVariant} personaSize={ctx.personaSize} showLPC={ctx.showLPC} />
                     </div>
                 </div>);
             }

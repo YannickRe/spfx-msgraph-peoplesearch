@@ -24,6 +24,7 @@ define([], function() {
     "SearchQuerySettingsGroupName": "Search Parameter",
     "SelectParameter": "$select parameter value",
     "ShowPaginationControl": "Show pagination",
+    "ShowLivePersonaCard": "Show Live Persona Card",
     "ShowResultsCountLabel": "Show results count",
     "ShowBlankLabel": "Show blank if no result",
     "ShowBlankEditInfoMessage": "No result returned for this query. This Web Part will remain blank in display mode according to parameters.",

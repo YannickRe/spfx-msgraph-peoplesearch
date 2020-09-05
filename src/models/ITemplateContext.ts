@@ -9,6 +9,7 @@ interface ITemplateContext {
     showResultsCount: boolean;
     showBlank: boolean;
     showPagination: boolean;
+    showLPC: boolean;
     peopleFields?: IComponentFieldsConfiguration[];
     themeVariant?: IReadonlyTheme;
     serviceScope: ServiceScope;

@@ -83,6 +83,7 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
           showBlank: this.properties.showBlank,
           showResultsCount: this.properties.showResultsCount,
           showPagination: this.properties.showPagination,
+          showLPC: this.properties.showLPC,
           searchParameterOption: this.properties.searchParameterOption,
           searchService: this._searchService,
           templateService: this._templateService,
@@ -328,6 +329,9 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
       PropertyPaneToggle('showResultsCount', {
           label: strings.ShowResultsCountLabel,
           checked: this.properties.showResultsCount,
+      }),
+      PropertyPaneToggle('showLPC', {
+        label: strings.ShowLivePersonaCard,
       }),
       PropertyPaneChoiceGroup('selectedLayout', {
           label: strings.ResultsLayoutLabel,

@@ -35,7 +35,7 @@ export class PersonaCard extends React.Component<IPersonaCardProps,IPersonaCardS
    * @memberof PersonaCard
    */
   public async componentDidMount() {
-    if (Environment.type !== EnvironmentType.Local) {
+    if (Environment.type !== EnvironmentType.Local && this.props.showLPC) {
       await this._loadSpfxSharedLibrary();
     }
   }
@@ -133,7 +133,7 @@ export class PersonaCard extends React.Component<IPersonaCardProps,IPersonaCardS
   public render(): React.ReactElement<IPersonaCardProps> {
     return (
       <React.Fragment>
-        {this.state.isComponentLoaded
+        {this.state.isComponentLoaded && this.props.showLPC
           ? this._LivePersonaCard()
           : this._PersonaCard()}
       </React.Fragment>

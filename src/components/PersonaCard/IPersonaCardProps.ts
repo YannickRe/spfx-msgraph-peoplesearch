@@ -9,7 +9,7 @@ export interface IPersonaCardProps {
   fieldsConfiguration?: IComponentFieldsConfiguration[];
   personaSize?: string;
   themeVariant?: IReadonlyTheme;
-
+  showLPC:boolean;
   // Individual content properties (i.e web component attributes)
   text?: string;
   secondaryText?: string;

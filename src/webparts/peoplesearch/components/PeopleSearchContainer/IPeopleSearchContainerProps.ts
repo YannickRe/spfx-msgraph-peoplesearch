@@ -30,6 +30,8 @@ export interface IPeopleSearchContainerProps {
 
     showPagination: boolean;
 
+    showLPC: boolean;
+
     /**
      * The current display mode of Web Part
      */

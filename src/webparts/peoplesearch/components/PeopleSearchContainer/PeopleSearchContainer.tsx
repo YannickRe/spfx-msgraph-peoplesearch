@@ -103,6 +103,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
           showPagination: this.props.showPagination,
           showResultsCount: this.props.showResultsCount,
           showBlank: this.props.showBlank,
+          showLPC: this.props.showLPC,
           themeVariant: this.props.themeVariant,
           pageSize: this.props.searchService.pageSize,
           serviceScope: this.props.serviceScope
@@ -130,6 +131,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
         showPagination: this.props.showPagination,
         showResultsCount: this.props.showResultsCount,
         showBlank: this.props.showBlank,
+        showLPC: this.props.showLPC,
         themeVariant: this.props.themeVariant,
         pageSize: this.props.searchService.pageSize,
         serviceScope: this.props.serviceScope

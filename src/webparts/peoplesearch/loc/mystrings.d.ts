@@ -23,6 +23,7 @@ declare interface IPeopleSearchWebPartStrings {
   SearchQuerySettingsGroupName: string;
   SelectParameter: string;
   ShowPaginationControl: string;
+  ShowLivePersonaCard: string;
   ShowResultsCountLabel: string;
   ShowBlankLabel: string;
   ShowBlankEditInfoMessage: string;

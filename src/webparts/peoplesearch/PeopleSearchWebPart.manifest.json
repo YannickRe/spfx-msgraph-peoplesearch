@@ -21,6 +21,7 @@
       "pageSize": 10,
       "webPartTitle": "People Search",
       "showPagination": true,
+      "showLPC": true,
       "showBlank": true,
       "showResultsCount": true
     }
