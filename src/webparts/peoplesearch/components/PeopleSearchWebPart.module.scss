@@ -13,3 +13,42 @@
   justify-content: center;
   align-items: center;
 }
+
+.searchBox {
+  position: relative;
+  margin-bottom: 10px;
+  
+  .searchBoxWrapper {
+      display: flex;
+      border: 1px solid #c2c2c2;
+      &:hover {
+          border-color: #272727;
+      }
+  }
+  .searchTextField {
+      width: 100%;
+      flex: 1 1 auto;
+      border: none;
+      & input {
+          color: '[theme:bodyText, default:#000000]';
+      }
+      & i {
+          color: '[theme:primaryButtonBackground, default:#000000]';
+      }
+  }
+  .searchButton {
+      background: '[theme:primaryButtonBackground, default:#0078d7]';
+      &:hover {
+          background: '[theme:primaryButtonBackgroundHovered, default:#0078d7]';
+      }
+      & i {
+          color: '[theme:primaryButtonText, default:#ffffff]';
+          &:hover {
+              color: '[theme:primaryButtonTextHovered, default:#ffffff]';
+          }
+      }
+  }
+  *::-ms-clear {
+      display: none;
+  }
+}

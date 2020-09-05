@@ -20,6 +20,8 @@ import { DisplayMode } from "@microsoft/sp-core-library";
 import ResultsLayoutOption from "../../../../models/ResultsLayoutOption";
 import { isEqual, isEmpty } from "@microsoft/sp-lodash-subset";
 import ITemplateContext from "../../../../models/ITemplateContext";
+import { PeopleSearchBox } from "../PeopleSearchBox";
+import SearchParameterOption from "../../../../models/SearchParameterOption";
 
 export class PeopleSearchContainer extends React.Component<IPeopleSearchContainerProps,IPeopleSearchContainerState> {
 
@@ -131,9 +133,12 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
 
       let renderSearchResultTemplate = this.props.templateService.getTemplateComponent(this.props.selectedLayout, templateContext);
 
+      let renderSearchBox = (this.props.searchParameterOption === SearchParameterOption.SearchBox) ? <PeopleSearchBox themeVariant={this.props.themeVariant} onSearch={async (searchQuery) => { this.props.searchService.searchParameter = searchQuery; await this._fetchPeopleSearchResults(); }} /> : null;
+
       renderWebPartContent =
         <React.Fragment>
             {renderOverlay}
+            {renderSearchBox}
             {renderSearchResultTemplate}
         </React.Fragment>;
     }

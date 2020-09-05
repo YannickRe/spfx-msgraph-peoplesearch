@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDom from "react-dom";
 import { Version, Environment, EnvironmentType } from "@microsoft/sp-core-library";
-import { ThemeProvider, IReadonlyTheme, ThemeChangedEventArgs } from '@microsoft/sp-component-base';
+import { DynamicProperty, ThemeProvider, IReadonlyTheme, ThemeChangedEventArgs } from '@microsoft/sp-component-base';
 import { BaseClientSideWebPart, IWebPartPropertiesMetadata } from "@microsoft/sp-webpart-base";
 import { DisplayMode } from "@microsoft/sp-core-library";
 import { isEqual } from '@microsoft/sp-lodash-subset';
@@ -25,6 +25,7 @@ import { ISearchService, MockSearchService, SearchService } from "../../services
 import { IPeopleSearchContainerProps, PeopleSearchContainer } from "./components/PeopleSearchContainer";
 import ResultsLayoutOption from "../../models/ResultsLayoutOption";
 import { TemplateService } from "../../services/TemplateService/TemplateService";
+import SearchParameterOption from "../../models/SearchParameterOption";
 
 export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSearchWebPartProps> {
   private _searchService: ISearchService;
@@ -82,6 +83,7 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
           showBlank: this.properties.showBlank,
           showResultsCount: this.properties.showResultsCount,
           showPagination: this.properties.showPagination,
+          searchParameterOption: this.properties.searchParameterOption,
           searchService: this._searchService,
           templateService: this._templateService,
           templateParameters: this.properties.templateParameters,
@@ -150,35 +152,9 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
         groupFields: this._getQueryFields()
       },
       {
-        primaryGroup: {
-          groupName: strings.SearchQuerySettingsGroupName,
-          groupFields: [
-            PropertyPaneTextField('searchParameter', {
-              label: strings.SearchParameter
-            })
-          ]
-        },
-        secondaryGroup: {
-          groupName: strings.SearchQuerySettingsGroupName,
-          groupFields: [
-
-            PropertyPaneDynamicFieldSet({
-              label: strings.SearchParameter,
-              fields: [
-                PropertyPaneDynamicField('searchParameter', {
-                  label: strings.SearchParameter
-                })
-              ],
-              sharedConfiguration: {
-                depth: DynamicDataSharedDepth.Property
-              }
-            })
-          ]
-        },
-        // Show the secondary group only if the web part has been
-        // connected to a dynamic data source
-        showSecondaryGroup: !!this.properties.searchParameter.tryGetSource()
-      } as IPropertyPaneConditionalGroup,
+        groupName: strings.SearchQuerySettingsGroupName,
+        groupFields: this._getSearchQueryFields()
+      },
       {
         groupName: strings.StylingSettingsGroupName,
         groupFields: this._getStylingFields(),
@@ -193,7 +169,7 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
       pages: [
         {
           groups: propertyPaneGroups,
-          displayGroupsAsAccordion: false
+          displayGroupsAsAccordion: true
         }
       ]
     };
@@ -203,6 +179,12 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
     if (propertyPath.localeCompare('selectedLayout') === 0) {
       await this._initTemplate();
       this.context.propertyPane.refresh();
+    }
+
+    if (propertyPath.localeCompare('searchParameterOption') === 0) {
+      if (this.properties.searchParameterOption !== SearchParameterOption.Dynamic && this.properties.searchParameterOption !== SearchParameterOption.Static) {
+        this.properties.searchParameter.setValue("");
+      }
     }
   }
 
@@ -215,10 +197,67 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
   }
 
   /**
+   * Determines the group fields for search query options inside the property pane
+   */
+  private _getSearchQueryFields(): IPropertyPaneField<any>[] {
+    const searchParameterOptions = [
+      {
+          text: strings.NoneSearchParameterOption,
+          key: SearchParameterOption.None
+      },
+      {
+        text: strings.BoxSearchParameterOption,
+        key: SearchParameterOption.SearchBox,
+      },
+      {
+          text: strings.StaticSearchParameterOption,
+          key: SearchParameterOption.Static
+      },
+      {
+          text: strings.DynamicSearchParameterOption,
+          key: SearchParameterOption.Dynamic
+      }
+    ] as IPropertyPaneChoiceGroupOption[];
+
+    let searchQueryFields: IPropertyPaneField<any>[] = [
+      PropertyPaneChoiceGroup('searchParameterOption', {
+        label: strings.SearchParameterOption,
+        options: searchParameterOptions
+      }),
+    ];
+
+    if (this.properties.searchParameterOption == SearchParameterOption.Static) {
+      searchQueryFields.push(
+        PropertyPaneTextField('searchParameter', {
+          label: strings.SearchParameter
+        })
+      );
+    }
+
+    if (this.properties.searchParameterOption == SearchParameterOption.Dynamic) {
+      searchQueryFields.push(
+        PropertyPaneDynamicFieldSet({
+          label: strings.SearchParameter,
+          fields: [
+            PropertyPaneDynamicField('searchParameter', {
+              label: strings.SearchParameter
+            })
+          ],
+          sharedConfiguration: {
+            depth: DynamicDataSharedDepth.Property
+          }
+        })
+      );
+    }
+
+    return searchQueryFields;
+  }
+
+  /**
    * Determines the group fields for query options inside the property pane
    */
   private _getQueryFields(): IPropertyPaneField<any>[] {
-    let stylingFields: IPropertyPaneField<any>[] = [
+    let queryFields: IPropertyPaneField<any>[] = [
       PropertyPaneTextField('selectParameter', {
           label: strings.SelectParameter,
           multiline: true
@@ -242,7 +281,7 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
       }),
     ];
 
-    return stylingFields;
+    return queryFields;
   }
 
     /**
@@ -325,6 +364,7 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
   */
   private _initializeRequiredProperties() {
     this.properties.selectedLayout = (this.properties.selectedLayout !== undefined && this.properties.selectedLayout !== null) ? this.properties.selectedLayout : ResultsLayoutOption.People;
+    this.properties.searchParameterOption = (this.properties.searchParameterOption !== undefined && this.properties.searchParameterOption !== null) ? this.properties.searchParameterOption : SearchParameterOption.None;
     this.properties.templateParameters = this.properties.templateParameters ? this.properties.templateParameters : {};
   }
 

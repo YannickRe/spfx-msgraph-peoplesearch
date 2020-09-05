@@ -13,7 +13,13 @@ declare interface IPeopleSearchWebPartStrings {
   QuerySettingsGroupName: string;
   ResultsCount: string;
   ResultsLayoutLabel: string;
+  SearchInputPlaceholder: string;
   SearchParameter: string;
+  SearchParameterOption: string;
+  NoneSearchParameterOption: string;
+  StaticSearchParameterOption: string;
+  BoxSearchParameterOption: string;
+  DynamicSearchParameterOption: string;
   SearchQuerySettingsGroupName: string;
   SelectParameter: string;
   ShowPaginationControl: string;

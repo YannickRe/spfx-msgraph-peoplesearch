@@ -125,8 +125,6 @@ export class TemplateService {
         }
 
         return [
-            
-            // Careful, the property names should match the React components props. These will be injected in the Handlebars template context and passed as web component attributes
             PropertyFieldCollectionData('templateParameters.peopleFields', {
                 manageBtnLabel: strings.TemplateParameters.ManagePeopleFieldsLabel,
                 key: 'templateParameters.peopleFields',

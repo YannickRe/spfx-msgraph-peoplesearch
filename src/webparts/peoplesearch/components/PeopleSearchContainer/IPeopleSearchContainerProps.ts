@@ -3,6 +3,7 @@ import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import { ISearchService } from "../../../../services/SearchService";
 import ResultsLayoutOption from "../../../../models/ResultsLayoutOption";
 import { TemplateService } from "../../../../services/TemplateService/TemplateService";
+import SearchParameterOption from "../../../../models/SearchParameterOption";
 
 export interface IPeopleSearchContainerProps {
       /**
@@ -14,6 +15,8 @@ export interface IPeopleSearchContainerProps {
      * The search data provider instance
      */
     searchService: ISearchService;
+
+    searchParameterOption: SearchParameterOption;
 
     /**
      * Show the result count and entered keywords
