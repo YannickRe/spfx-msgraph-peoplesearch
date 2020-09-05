@@ -186,7 +186,7 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
     }
 
     if (propertyPath.localeCompare('searchParameterOption') === 0) {
-      if (this.properties.searchParameterOption !== SearchParameterOption.Dynamic && this.properties.searchParameterOption !== SearchParameterOption.Static) {
+      if (this.properties.searchParameterOption === SearchParameterOption.None) {
         this.properties.searchParameter.setValue("");
       }
     }
