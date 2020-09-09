@@ -12,7 +12,6 @@ The web part accepts a search query through a Dynamic Data connection, to furthe
 - Support loading Profile Pictures
 - Improve $select field with predefined properties of the User object
 - Improve field mapping with the selected properties defined in $select
-- Toggle Live Person Card
 
 ## Accompanying blog post
 I wrote a blog post covering more if the inner workings, you can find it at [SPFx People Search web part based on Microsoft Graph](https://blog.yannickreekmans.be/spfx-people-search-web-part-based-on-microsoft-graph/)
@@ -31,6 +30,7 @@ I wrote a blog post covering more if the inner workings, you can find it at [SPF
 Version|Date|Comments
 -------|----|--------
 2.0.0|July 30, 2020|Initial release
+2.1.0|September 9th, 2020|Added built-in searchbox, option to disable LPC and pagination support
 
 ## Disclaimer
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
