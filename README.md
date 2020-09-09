@@ -46,10 +46,10 @@ Version|Date|Comments
   - `gulp bundle --ship`
   - `gulp package-solution --ship`
 - Add to AppCatalog and deploy
-- Assign 'User.Read.All' delegated permissions to the 'SharePoint Online Client Extensibility Web Application Principal', easiest way is with [Office 365 CLI](https://pnp.github.io/office365-cli/):
+- Assign 'User.Read.All' delegated permissions to the 'SharePoint Online Client Extensibility Web Application Principal', easiest way is with [CLI for Microsoft 365](https://pnp.github.io/cli-microsoft365/):
 ```
-o365 login
-o365 spo serviceprincipal grant add --resource 'Microsoft Graph' --scope 'User.Read.All'
+m365 login
+m365 spo serviceprincipal grant add --resource 'Microsoft Graph' --scope 'User.Read.All'
 ```
 
 ---
