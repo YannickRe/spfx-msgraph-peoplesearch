@@ -118,7 +118,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
     renderWebPartTitle = <WebPartTitle displayMode={this.props.displayMode} title={this.props.webPartTitle} updateProperty={(value: string) => this.props.updateWebPartTitle(value)} />;
 
     // WebPart content
-    if (isEmpty(items.value) && this.props.showBlank && this.props.selectedLayout !== ResultsLayoutOption.Debug) {
+    if (isEmpty(items.value) && this.props.showBlank && this.props.selectedLayout !== ResultsLayoutOption.Debug && this.props.searchParameterOption !== SearchParameterOption.SearchBox) {
       if (this.props.displayMode === DisplayMode.Edit) {
         renderWebPartContent = <MessageBar messageBarType={MessageBarType.info}>{strings.ShowBlankEditInfoMessage}</MessageBar>;
       }
@@ -130,7 +130,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
         items: items,
         showPagination: this.props.showPagination,
         showResultsCount: this.props.showResultsCount,
-        showBlank: this.props.showBlank,
+        showBlank: this.props.showBlank && this.props.searchParameterOption !== SearchParameterOption.SearchBox,
         showLPC: this.props.showLPC,
         themeVariant: this.props.themeVariant,
         pageSize: this.props.searchService.pageSize,
