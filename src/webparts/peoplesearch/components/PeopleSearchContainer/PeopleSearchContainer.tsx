@@ -34,6 +34,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
       results: [{
         value: []
       }],
+      resultCount: 0,
       areResultsLoading: false,
       errorMessage: '',
       hasError: false,
@@ -100,9 +101,10 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
       } else {
         let templateContext = {
           items: items,
+          resultCount: this.state.resultCount,
           showPagination: this.props.showPagination,
           showResultsCount: this.props.showResultsCount,
-          showBlank: this.props.showBlank,
+          showBlank: this.props.showBlank && this.props.searchParameterOption !== SearchParameterOption.SearchBox,
           showLPC: this.props.showLPC,
           themeVariant: this.props.themeVariant,
           pageSize: this.props.searchService.pageSize,
@@ -128,6 +130,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
     } else {
       let templateContext = {
         items: items,
+        resultCount: this.state.resultCount,
         showPagination: this.props.showPagination,
         showResultsCount: this.props.showResultsCount,
         showBlank: this.props.showBlank && this.props.searchParameterOption !== SearchParameterOption.SearchBox,
@@ -207,6 +210,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
         let searchResults = await this.props.searchService.searchUsers();
         this.setState({
             results: [searchResults],
+            resultCount: searchResults["@odata.count"],
             areResultsLoading: false,
             page: 1
         });
@@ -236,6 +240,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
           results: [{
             value: []
           }],
+          resultCount: 0,
           hasError: true,
           errorMessage: error.message,
           page: 1

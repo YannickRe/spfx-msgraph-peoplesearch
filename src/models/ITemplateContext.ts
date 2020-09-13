@@ -6,6 +6,7 @@ import { ServiceScope } from '@microsoft/sp-core-library';
 
 interface ITemplateContext {
     items: PageCollection<MicrosoftGraph.User>;
+    resultCount: number;
     showResultsCount: boolean;
     showBlank: boolean;
     showPagination: boolean;

@@ -70,10 +70,6 @@ export class MockSearchService implements ISearchService {
             resultData["@odata.nextLink"] = (currentPageNumber + 1).toString();
         }
 
-        if (currentPageNumber > 0) {
-            resultData["@odata.prevLink"] = (currentPageNumber - 1).toString();
-        }
-
         resultData.value = peopleResults;
 
         return resultData;

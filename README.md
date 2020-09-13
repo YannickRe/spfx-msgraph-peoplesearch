@@ -31,6 +31,7 @@ Version|Date|Comments
 -------|----|--------
 2.0.0|July 30, 2020|Initial release
 2.1.0|September 9th, 2020|Added built-in searchbox, option to disable LPC and pagination support
+2.1.1|September 13th, 2020|Small bugfix for issue when showBlank and SearchBox are combined + result count on pages > 1
 
 ## Disclaimer
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**

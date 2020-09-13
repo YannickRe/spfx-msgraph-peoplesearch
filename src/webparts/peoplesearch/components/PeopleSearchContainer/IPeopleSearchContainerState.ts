@@ -3,6 +3,7 @@ import { PageCollection } from '../../../../models/PageCollection';
 
 export interface IPeopleSearchContainerState {
   results: PageCollection<MicrosoftGraph.User>[];
+  resultCount: number;
   areResultsLoading: boolean;
   errorMessage: string;
   hasError: boolean;

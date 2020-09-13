@@ -22,10 +22,8 @@ export class PeopleViewComponent extends React.Component<IPeopleViewProps, IPeop
 
         if (!isEmpty(ctx.items) && !isEmpty(ctx.items.value)) {
             if (ctx.showResultsCount) {
-                const resultCount = ctx.items["@odata.count"];
-                
                 resultCountElement = <div className={styles.resultCount}>
-                        <label className="ms-fontWeight-semibold">{Text.format(strings.ResultsCount, resultCount)}</label>
+                        <label className="ms-fontWeight-semibold">{Text.format(strings.ResultsCount, ctx.resultCount)}</label>
                     </div>;
             }
 
