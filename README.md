@@ -3,18 +3,19 @@
 ## Summary
 
 Show and search users from your organisation, through Microsoft Graph. Search results show as a nice People Card, and display the Live Persona Card on hover.  
-The web part accepts a search query through a Dynamic Data connection, to further filter the displayed results. A source for this search query is not provided, but by default this can come from the Microsoft Search search box or the Page Environment. You could also use the Search Box Web Part provided by the [PnP Modern Search Web Parts](https://microsoft-search.github.io/pnp-modern-search/).
+The web part can be configured with a static search query, show a search box or accept a search query through a Dynamic Data connection to further filter the displayed results. Dynamic data can by default come from the Microsoft Search search box or the Page Environment. You could also use the Search Box Web Part provided by the [PnP Modern Search Web Parts](https://microsoft-search.github.io/pnp-modern-search/).
 
 ![directory](/assets/MicrosoftGraphPeopleSearch.gif) 
-![directory](/assets/MicrosoftGraphPeopleSearch-LPC.gif) 
 
-## Future improvements
-- Support loading Profile Pictures
-- Improve $select field with predefined properties of the User object
-- Improve field mapping with the selected properties defined in $select
+As a code sample this clarifies the following concepts:
+- Connecting to Microsoft Graph using a SharePoint Framework web part
+- Implement efficient paging through large collections in Microsoft Graph
+- Use of $select, $filter, $orderby, $count and $search query parameters for Microsoft Graph
+- Implement batch requests to Microsoft Graph for fetching multiple resources in one network request
 
-## Accompanying blog post
-I wrote a blog post covering more if the inner workings, you can find it at [SPFx People Search web part based on Microsoft Graph](https://blog.yannickreekmans.be/spfx-people-search-web-part-based-on-microsoft-graph/)
+## More information
+I wrote a blog post covering more if the inner workings, you can find it at [SPFx People Search web part based on Microsoft Graph](https://blog.yannickreekmans.be/spfx-people-search-web-part-based-on-microsoft-graph/).  
+Additionally, this web part has also been demoed on the [PnP Community call of September 10th, 2020](https://youtu.be/vxwzNCWIAWY?t=1342).
 
 ## Used SharePoint Framework Version 
 ![drop](https://img.shields.io/badge/version-1.11-green.svg)
@@ -32,6 +33,7 @@ Version|Date|Comments
 2.0.0|July 30, 2020|Initial release
 2.1.0|September 9th, 2020|Added built-in searchbox, option to disable LPC and pagination support
 2.1.1|September 13th, 2020|Small bugfix for issue when showBlank and SearchBox are combined + result count on pages > 1
+2.2.0|September 21st, 2020|Implemented batch loading of profile pictures
 
 ## Disclaimer
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**

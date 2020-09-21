@@ -1,8 +1,8 @@
-import * as MicrosoftGraph from '@microsoft/microsoft-graph-types';
+import { ExtendedUser } from '../../../../models/ExtendedUser';
 import { PageCollection } from '../../../../models/PageCollection';
 
 export interface IPeopleSearchContainerState {
-  results: PageCollection<MicrosoftGraph.User>[];
+  results: PageCollection<ExtendedUser>[];
   resultCount: number;
   areResultsLoading: boolean;
   errorMessage: string;

@@ -1,8 +1,11 @@
 import { ISearchService } from "./ISearchService";
-import * as MicrosoftGraph from '@microsoft/microsoft-graph-types';
 import { MSGraphClientFactory } from '@microsoft/sp-http';
 import { isEmpty } from "@microsoft/sp-lodash-subset";
 import { PageCollection } from "../../models/PageCollection";
+import { ExtendedUser } from "../../models/ExtendedUser";
+import { IGraphBatchResponseBody } from "./IGraphBatchResponseBody";
+import { IGraphBatchRequestBody } from "./IGraphBatchRequestBody";
+import { IProfileImage } from "../../models/IProfileImage";
 
 export class SearchService implements ISearchService {
   private _msGraphClientFactory: MSGraphClientFactory;
@@ -31,7 +34,7 @@ export class SearchService implements ISearchService {
     this._msGraphClientFactory = msGraphClientFactory;
   }
 
-  public async searchUsers(): Promise<PageCollection<MicrosoftGraph.User>> {
+  public async searchUsers(): Promise<PageCollection<ExtendedUser>> {
     const graphClient = await this._msGraphClientFactory.getClient();
 
     let resultQuery = graphClient
@@ -60,11 +63,33 @@ export class SearchService implements ISearchService {
     return await resultQuery.get();
   }
 
-  public async fetchPage(pageLink: string): Promise<PageCollection<MicrosoftGraph.User>>  {
+  public async fetchPage(pageLink: string): Promise<PageCollection<ExtendedUser>>  {
     const graphClient = await this._msGraphClientFactory.getClient();
 
     let resultQuery = graphClient.api(pageLink).header("ConsistencyLevel", "eventual");
 
     return await resultQuery.get();
+  }
+
+  public async fetchProfilePictures(users: ExtendedUser[]): Promise<IProfileImage> {
+    const graphClient = await this._msGraphClientFactory.getClient();
+
+    let body: IGraphBatchRequestBody = { requests: [] };
+        
+    users.forEach((user) => {
+      let requestUrl: string = `/users/${user.id}/photo/$value`;
+      body.requests.push({ id: user.id.toString(), method: 'GET', url: requestUrl });
+    });
+
+    var response: IGraphBatchResponseBody = await graphClient.api('$batch').version('v1.0').post(body);
+
+    var results: IProfileImage = {};
+    response.responses.forEach(r => {
+      if (r.status === 200) {
+        results[r.id] = `data:${r.headers["Content-Type"]};base64,${r.body}`;
+      }
+    });
+
+    return results;
   }
 }

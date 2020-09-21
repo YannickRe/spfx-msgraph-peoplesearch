@@ -1,4 +1,5 @@
-import * as MicrosoftGraph from '@microsoft/microsoft-graph-types';
+import { ExtendedUser } from '../../models/ExtendedUser';
+import { IProfileImage } from '../../models/IProfileImage';
 import { PageCollection } from '../../models/PageCollection';
 
 export interface ISearchService {
@@ -7,6 +8,7 @@ export interface ISearchService {
     orderByParameter: string;
     searchParameter: string;
     pageSize: number;
-    searchUsers(): Promise<PageCollection<MicrosoftGraph.User>>;
-    fetchPage(pageLink: string): Promise<PageCollection<MicrosoftGraph.User>>;
+    searchUsers(): Promise<PageCollection<ExtendedUser>>;
+    fetchPage(pageLink: string): Promise<PageCollection<ExtendedUser>>;
+    fetchProfilePictures(users: ExtendedUser[]): Promise<IProfileImage>;
 }

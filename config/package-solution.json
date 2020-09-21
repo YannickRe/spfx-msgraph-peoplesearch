@@ -10,7 +10,7 @@
     },
     "name": "Microsoft Graph People Search",
     "id": "98a8d9d1-47c4-477c-addd-ecae95b235cc",
-    "version": "2.1.1.0",
+    "version": "2.2.0.0",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false

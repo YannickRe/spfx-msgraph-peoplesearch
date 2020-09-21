@@ -12,7 +12,6 @@ import {
   SpinnerSize,
   MessageBar,
   MessageBarType,
-  Icon,
   IconButton,
 } from "office-ui-fabric-react";
 import { Overlay } from 'office-ui-fabric-react/lib/Overlay';
@@ -24,6 +23,7 @@ import { isEqual, isEmpty } from "@microsoft/sp-lodash-subset";
 import ITemplateContext from "../../../../models/ITemplateContext";
 import { PeopleSearchBox } from "../PeopleSearchBox";
 import SearchParameterOption from "../../../../models/SearchParameterOption";
+import { ExtendedUser } from "../../../../models/ExtendedUser";
 
 export class PeopleSearchContainer extends React.Component<IPeopleSearchContainerProps,IPeopleSearchContainerState> {
 
@@ -213,7 +213,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
             resultCount: searchResults["@odata.count"],
             areResultsLoading: false,
             page: 1
-        });
+        }, () => this._fetchPeopleProfilePictures(1));
       } else if (this.state.results.length === (page - 1)) {
         if (this.hasNextPage()) {
           this.setState({
@@ -227,7 +227,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
             results: [...prevState.results, searchResults],
             areResultsLoading: false,
             page: page
-          }));
+          }), () => this._fetchPeopleProfilePictures(page));
         }
       } else {
         this.setState({
@@ -246,5 +246,45 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
           page: 1
       });
     }
+  }
+
+  private async _fetchPeopleProfilePictures(page: number): Promise<void> {
+    const items = this.state.results[page - 1];
+    const usersWithoutPhotos = items.value.filter(i => isEmpty(i.photoUrl));
+    const usersWithoutPhotosBatch = this._chunk(usersWithoutPhotos, 20);
+
+    for (let i = 0; i < usersWithoutPhotosBatch.length; i++) {
+      let isUpdated = false;
+      let pictures = await this.props.searchService.fetchProfilePictures(usersWithoutPhotosBatch[i]);
+      let ids = Object.keys(pictures);
+      
+      items.value = items.value.map(u => {
+        if (ids.indexOf(u.id) !== -1) {
+          u.photoUrl = pictures[u.id];
+          isUpdated = true;
+        }
+        return u;
+      });
+
+      if (isUpdated) {
+        this.setState(prevState => {
+          prevState.results[page - 1] = items;
+    
+          return {
+            results: prevState.results
+          };
+        });
+      }
+    }
+  }
+
+  private _chunk(array: ExtendedUser[], size: number): ExtendedUser[][]  {
+    const chunked_arr: ExtendedUser[][] = [];
+    let index = 0;
+    while (index < array.length) {
+      chunked_arr.push(array.slice(index, size + index));
+      index += size;
+    }
+    return chunked_arr;
   }
 }

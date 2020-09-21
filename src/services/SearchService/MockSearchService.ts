@@ -1,7 +1,8 @@
 import { ISearchService } from "./ISearchService";
-import * as MicrosoftGraph from '@microsoft/microsoft-graph-types';
 import * as peopleSearchResults from './MockSearchServiceResults.json';
 import { PageCollection } from "../../models/PageCollection";
+import { ExtendedUser } from "../../models/ExtendedUser";
+import { IProfileImage } from "../../models/IProfileImage";
 
 export class MockSearchService implements ISearchService {
     private _selectParameter: string[];
@@ -25,10 +26,10 @@ export class MockSearchService implements ISearchService {
     public get pageSize(): number { return this._pageSize; }
     public set pageSize(value: number) { this._pageSize = value; }
     
-    public async searchUsers(): Promise<PageCollection<MicrosoftGraph.User>> {
+    public async searchUsers(): Promise<PageCollection<ExtendedUser>> {
         const timeout = Math.floor(Math.random() * (1000)) + 1;
         
-        let resultData: PageCollection<MicrosoftGraph.User> = this.getResultData("1");
+        let resultData: PageCollection<ExtendedUser> = this.getResultData("1");
 
         return new Promise((resolve) => {
             setTimeout(() => {
@@ -37,10 +38,10 @@ export class MockSearchService implements ISearchService {
         });
     }
 
-    public async fetchPage(currentPage: string): Promise<PageCollection<MicrosoftGraph.User>> {
+    public async fetchPage(currentPage: string): Promise<PageCollection<ExtendedUser>> {
         const timeout = Math.floor(Math.random() * (1000)) + 1;
         
-        let resultData: PageCollection<MicrosoftGraph.User> = this.getResultData(currentPage);
+        let resultData: PageCollection<ExtendedUser> = this.getResultData(currentPage);
 
         return new Promise((resolve) => {
             setTimeout(() => {
@@ -49,10 +50,14 @@ export class MockSearchService implements ISearchService {
         });
     }
 
-    private getResultData(currentPage: string): PageCollection<MicrosoftGraph.User> {
-        let resultData: PageCollection<MicrosoftGraph.User> = {
+    public async fetchProfilePictures(users: ExtendedUser[]): Promise<IProfileImage> {
+        return {};
+     }
+
+    private getResultData(currentPage: string): PageCollection<ExtendedUser> {
+        let resultData: PageCollection<ExtendedUser> = {
             "@odata.count": peopleSearchResults["@odata.count"],
-            value: peopleSearchResults.value as MicrosoftGraph.User[]
+            value: peopleSearchResults.value as ExtendedUser[]
         };
         let peopleResults = resultData.value;
 

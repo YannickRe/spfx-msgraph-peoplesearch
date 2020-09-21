@@ -2,11 +2,6 @@ import * as React from 'react';
 import { IPersonaCardProps } from './IPersonaCardProps';
 import { IPersonaCardState } from './IPersonaCardState';
 import {
-  Log, Environment, EnvironmentType,
-} from '@microsoft/sp-core-library';
-import { SPComponentLoader } from '@microsoft/sp-loader';
-
-import {
   Persona,
   IPersonaSharedProps,
 } from 'office-ui-fabric-react';
@@ -14,50 +9,8 @@ import { ITheme } from '@uifabric/styling';
 import { TemplateService } from '../../services/TemplateService/TemplateService';
 import { isEmpty } from '@microsoft/sp-lodash-subset';
 
-const LIVE_PERSONA_COMPONENT_ID: string = "914330ee-2df2-4f6e-a858-30c23a812408";
 
 export class PersonaCard extends React.Component<IPersonaCardProps,IPersonaCardState> {
-  private sharedLibrary: any;
-
-  constructor(props: IPersonaCardProps) {
-    super(props);
-
-    this.state = {
-      isComponentLoaded: false,
-    };
-
-    this.sharedLibrary = null;
-  }
-
-  /**
-   *
-   *
-   * @memberof PersonaCard
-   */
-  public async componentDidMount() {
-    if (Environment.type !== EnvironmentType.Local && this.props.showLPC) {
-      await this._loadSpfxSharedLibrary();
-    }
-  }
-
-  private async _loadSpfxSharedLibrary() {
-
-    if (!this.state.isComponentLoaded) {
-
-        try {
-
-            this.sharedLibrary = await SPComponentLoader.loadComponentById(LIVE_PERSONA_COMPONENT_ID);   
-
-            this.setState({
-                isComponentLoaded: true
-            });
-
-        } catch (error) {
-           Log.error(`[LivePersona_Component]`, error, this.props.serviceScope);
-        }
-    }        
-}
-
   private determinePersonaConfig(): IPersonaCardProps {
     let processedProps: IPersonaCardProps = this.props;
 
@@ -79,7 +32,7 @@ export class PersonaCard extends React.Component<IPersonaCardProps,IPersonaCardS
     let processedProps: IPersonaCardProps = this.determinePersonaConfig();
 
     return React.createElement(
-      this.sharedLibrary.LivePersonaCard,
+      this.props.lpcLibrary.LivePersonaCard,
       {
         className: 'livePersonaCard',
         clientScenario: "PeopleWebPart",
@@ -114,12 +67,17 @@ export class PersonaCard extends React.Component<IPersonaCardProps,IPersonaCardS
     }
 
     const persona: IPersonaSharedProps = {
-      theme:this.props.themeVariant as ITheme,
+      theme: this.props.themeVariant as ITheme,
       text: processedProps.text,
       secondaryText: processedProps.secondaryText,
       tertiaryText: processedProps.tertiaryText,
-      optionalText: processedProps.optionalText
+      optionalText: processedProps.optionalText,
+      imageShouldFadeIn: false
     };
+
+    if (!isEmpty(this.props.item.photoUrl)) {
+      persona.imageUrl = this.props.item.photoUrl;
+    }
 
     return <Persona {...persona} size={parseInt(this.props.personaSize)} />;
   }
@@ -133,7 +91,7 @@ export class PersonaCard extends React.Component<IPersonaCardProps,IPersonaCardS
   public render(): React.ReactElement<IPersonaCardProps> {
     return (
       <React.Fragment>
-        {this.state.isComponentLoaded && this.props.showLPC
+        {!isEmpty(this.props.lpcLibrary) && this.props.showLPC
           ? this._LivePersonaCard()
           : this._PersonaCard()}
       </React.Fragment>

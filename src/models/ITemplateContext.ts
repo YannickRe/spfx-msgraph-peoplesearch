@@ -1,11 +1,11 @@
 import { PageCollection } from './PageCollection';
-import * as MicrosoftGraph from '@microsoft/microsoft-graph-types';
 import { IComponentFieldsConfiguration } from '../services/TemplateService/TemplateService';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import { ServiceScope } from '@microsoft/sp-core-library';
+import { ExtendedUser } from './ExtendedUser';
 
 interface ITemplateContext {
-    items: PageCollection<MicrosoftGraph.User>;
+    items: PageCollection<ExtendedUser>;
     resultCount: number;
     showResultsCount: boolean;
     showBlank: boolean;
