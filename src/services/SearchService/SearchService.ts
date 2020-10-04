@@ -39,7 +39,7 @@ export class SearchService implements ISearchService {
 
     let resultQuery = graphClient
       .api('/users')
-      .version("beta")
+      .version("v1.0")
       .header("ConsistencyLevel", "eventual")
       .count(true)
       .top(this.pageSize);

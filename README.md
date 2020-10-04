@@ -34,6 +34,7 @@ Version|Date|Comments
 2.1.0|September 9th, 2020|Added built-in searchbox, option to disable LPC and pagination support
 2.1.1|September 13th, 2020|Small bugfix for issue when showBlank and SearchBox are combined + result count on pages > 1
 2.2.0|September 21st, 2020|Implemented batch loading of profile pictures
+2.2.1|October 4th, 2020|Switched from beta endpoint to v1.0, as all required features are now supported there
 
 ## Disclaimer
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
