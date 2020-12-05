@@ -4,8 +4,8 @@ import { IPersonaCardState } from './IPersonaCardState';
 import {
   Persona,
   IPersonaSharedProps,
+  ITheme
 } from 'office-ui-fabric-react';
-import { ITheme } from '@uifabric/styling';
 import { TemplateService } from '../../services/TemplateService/TemplateService';
 import { isEmpty } from '@microsoft/sp-lodash-subset';
 

@@ -13,9 +13,9 @@ import {
   MessageBar,
   MessageBarType,
   IconButton,
+  Overlay,
+  ITheme
 } from "office-ui-fabric-react";
-import { Overlay } from 'office-ui-fabric-react/lib/Overlay';
-import { ITheme } from '@uifabric/styling';
 import { WebPartTitle } from "@pnp/spfx-controls-react/lib/WebPartTitle";
 import { DisplayMode } from "@microsoft/sp-core-library";
 import ResultsLayoutOption from "../../../../models/ResultsLayoutOption";

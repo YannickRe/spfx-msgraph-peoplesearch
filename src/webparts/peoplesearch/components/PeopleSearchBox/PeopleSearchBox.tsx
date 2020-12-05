@@ -1,5 +1,4 @@
 import * as React from "react";
-import { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 import * as strings from "PeopleSearchWebPartStrings";
 import styles from "../PeopleSearchWebPart.module.scss";
@@ -10,8 +9,8 @@ import { IPeopleSearchBoxState } from "./IPeopleSearchBoxState";
 import {
   IconButton,
   SearchBox,
+  ITheme
 } from "office-ui-fabric-react";
-import { ITheme } from '@uifabric/styling';
 
 export class PeopleSearchBox extends React.Component<IPeopleSearchBoxProps,IPeopleSearchBoxState> {
 
