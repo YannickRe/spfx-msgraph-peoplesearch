@@ -4,7 +4,7 @@ import { Version, Environment, EnvironmentType } from "@microsoft/sp-core-librar
 import { ThemeProvider, IReadonlyTheme, ThemeChangedEventArgs } from '@microsoft/sp-component-base';
 import { BaseClientSideWebPart, IWebPartPropertiesMetadata } from "@microsoft/sp-webpart-base";
 import { DisplayMode } from "@microsoft/sp-core-library";
-import { isEqual, isEmpty } from '@microsoft/sp-lodash-subset';
+import { isEqual } from '@microsoft/sp-lodash-subset';
 import {
   IPropertyPaneConfiguration,
   PropertyPaneToggle,
@@ -371,8 +371,8 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
   * Initializes the Web Part required properties if there are not present in the manifest (i.e. during an update scenario)
   */
   private _initializeRequiredProperties() {
-    this.properties.selectedLayout = !isEmpty(this.properties.selectedLayout) ? this.properties.selectedLayout : ResultsLayoutOption.People;
-    this.properties.searchParameterOption = !isEmpty(this.properties.searchParameterOption) ? this.properties.searchParameterOption : SearchParameterOption.None;
+    this.properties.selectedLayout = this.properties.selectedLayout ?? ResultsLayoutOption.People;
+    this.properties.searchParameterOption = this.properties.searchParameterOption ?? SearchParameterOption.None;
     this.properties.templateParameters = this.properties.templateParameters ? this.properties.templateParameters : {};
   }
 

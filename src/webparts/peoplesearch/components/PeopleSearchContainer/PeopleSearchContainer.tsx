@@ -249,7 +249,8 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
   }
 
   private async _fetchPeopleProfilePictures(page: number): Promise<void> {
-    const items = this.state.results[page - 1];
+    const currentState = this.state.results;
+    const items = currentState[page - 1];
     const usersWithoutPhotos = items.value.filter(i => isEmpty(i.photoUrl));
     const usersWithoutPhotosBatch = this._chunk(usersWithoutPhotos, 20);
 
@@ -268,11 +269,14 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
 
       if (isUpdated) {
         this.setState(prevState => {
-          prevState.results[page - 1] = items;
+          if (isEqual(prevState.results, currentState)) {
+            prevState.results[page - 1] = items;
     
-          return {
-            results: prevState.results
-          };
+            return {
+              results: prevState.results
+            };
+          }
+          return null;
         });
       }
     }

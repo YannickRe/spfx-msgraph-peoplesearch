@@ -33,7 +33,7 @@ export class PeopleSearchBox extends React.Component<IPeopleSearchBoxProps,IPeop
                   className={styles.searchTextField}
                   value={this.state.searchInputValue}
                   autoComplete="off"
-                  onChange={(value) => this.setState({ searchInputValue: value })}
+                  onChange={(event, value) => this.setState({ searchInputValue: value })}
                   onSearch={() => this._onSearch(this.state.searchInputValue)}
                   onClear={() => this._onSearch('', true)}
               />
