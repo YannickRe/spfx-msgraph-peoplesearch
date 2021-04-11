@@ -24,7 +24,8 @@
       "showPagination": true,
       "showLPC": true,
       "showBlank": true,
-      "showResultsCount": true
+      "showResultsCount": true,
+      "hideResultsOnload": false
     }
   }]
 }

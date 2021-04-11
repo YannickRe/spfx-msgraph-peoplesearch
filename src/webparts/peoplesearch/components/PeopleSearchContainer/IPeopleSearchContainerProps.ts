@@ -32,6 +32,7 @@ export interface IPeopleSearchContainerProps {
 
     showLPC: boolean;
 
+    hideResultsOnload: boolean;
     /**
      * The current display mode of Web Part
      */

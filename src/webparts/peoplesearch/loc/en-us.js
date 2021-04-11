@@ -26,6 +26,7 @@ define([], function() {
     "ShowPaginationControl": "Show pagination",
     "ShowLivePersonaCard": "Show Live Persona Card",
     "ShowResultsCountLabel": "Show results count",
+    "HideResultsOnloadLabel": "Hide results on load (without a query)",
     "ShowBlankLabel": "Show blank if no result",
     "ShowBlankEditInfoMessage": "No result returned for this query. This Web Part will remain blank in display mode according to parameters.",
     "StylingSettingsGroupName": "Styling options",

@@ -81,6 +81,7 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
           webPartTitle: this.properties.webPartTitle,
           displayMode: this.displayMode,
           showBlank: this.properties.showBlank,
+          hideResultsOnload: this.properties.hideResultsOnload,
           showResultsCount: this.properties.showResultsCount,
           showPagination: this.properties.showPagination,
           showLPC: this.properties.showLPC,
@@ -326,6 +327,10 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
           label: strings.ShowBlankLabel,
           checked: this.properties.showBlank,
       }),
+      PropertyPaneToggle('hideResultsOnload', {
+        label: strings.HideResultsOnloadLabel,
+        checked: this.properties.hideResultsOnload,
+    }),
       PropertyPaneToggle('showResultsCount', {
           label: strings.ShowResultsCountLabel,
           checked: this.properties.showResultsCount,

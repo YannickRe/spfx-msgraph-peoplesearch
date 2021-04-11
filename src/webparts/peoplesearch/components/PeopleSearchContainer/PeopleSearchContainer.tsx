@@ -43,7 +43,9 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
   }
 
   public async componentDidMount() {
-    await this._fetchPeopleSearchResults(1, true);
+    if (!this.props.hideResultsOnload) {
+      await this._fetchPeopleSearchResults(1, true);
+    }
   }
 
   /**

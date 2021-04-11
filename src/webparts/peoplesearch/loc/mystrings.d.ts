@@ -25,6 +25,7 @@ declare interface IPeopleSearchWebPartStrings {
   ShowPaginationControl: string;
   ShowLivePersonaCard: string;
   ShowResultsCountLabel: string;
+  HideResultsOnloadLabel: string;
   ShowBlankLabel: string;
   ShowBlankEditInfoMessage: string;
   StylingSettingsGroupName: string;

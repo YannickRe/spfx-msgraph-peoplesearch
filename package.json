@@ -1,6 +1,6 @@
 {
   "name": "spfx-msgraph-peoplesearch",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "private": true,
   "main": "lib/index.js",
   "engines": {

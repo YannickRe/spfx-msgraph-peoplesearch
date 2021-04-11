@@ -13,6 +13,7 @@ export interface IPeopleSearchWebPartProps {
   showLPC: boolean;
   showResultsCount: boolean;
   showBlank: boolean;
+  hideResultsOnload: boolean;
   selectedLayout: ResultsLayoutOption;
   webPartTitle: string;
   templateParameters: { [key:string]: any };
