@@ -8,4 +8,5 @@ export interface IPeopleSearchContainerState {
   errorMessage: string;
   hasError: boolean;
   page: number;
+  searchParameter: string;
 }

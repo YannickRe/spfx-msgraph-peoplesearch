@@ -38,7 +38,8 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
       areResultsLoading: false,
       errorMessage: '',
       hasError: false,
-      page: 1
+      page: 1,
+      searchParameter: ''
     };
   }
 
@@ -62,7 +63,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
     else if (!isEqual(this.props, prevProps)) {
       if (this.state.hasError) {
         this.setState({
-          hasError: false,
+          hasError: false
         });
       } else {
         this.forceUpdate();
@@ -203,18 +204,27 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
   private async _fetchPeopleSearchResults(page: number, reset: boolean = false): Promise<void> {
     try {
       if (page === 1 && reset || isEmpty(this.state.results) || isEmpty(this.state.results[0]) || isEmpty(this.state.results[0].value)) {
+        let localSearchParameter = this.props.searchService.searchParameter;
         this.setState({
           areResultsLoading: true,
           hasError: false,
-          errorMessage: ""
+          errorMessage: "",
+          searchParameter: localSearchParameter
         });
 
         let searchResults = await this.props.searchService.searchUsers();
-        this.setState({
-            results: [searchResults],
-            resultCount: searchResults["@odata.count"],
-            areResultsLoading: false,
-            page: 1
+
+        this.setState(prevState => {
+          if (prevState.searchParameter === localSearchParameter)
+          {
+            return {
+              results: [searchResults],
+              resultCount: searchResults["@odata.count"],
+              areResultsLoading: false,
+              page: 1
+            };
+          }
+          return null;
         }, () => this._fetchPeopleProfilePictures(1));
       } else if (this.state.results.length === (page - 1)) {
         if (this.hasNextPage()) {
