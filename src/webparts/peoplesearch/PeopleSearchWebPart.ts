@@ -18,7 +18,7 @@ import {
   PropertyPaneDynamicField,
   PropertyPaneDynamicFieldSet
 } from "@microsoft/sp-property-pane";
-import * as update from 'immutability-helper';
+import update from 'immutability-helper';
 import * as strings from "PeopleSearchWebPartStrings";
 import { IPeopleSearchWebPartProps } from "./IPeopleSearchWebPartProps";
 import { ISearchService, MockSearchService, SearchService } from "../../services/SearchService";

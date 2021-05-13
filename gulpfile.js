@@ -6,7 +6,6 @@ if (process.argv.indexOf('dist') !== -1) {
     process.argv.push('--ship');
 }
 
-const path = require('path');
 const gulp = require('gulp');
 const build = require('@microsoft/sp-build-web');
 const gulpSequence = require('gulp-sequence');
@@ -17,9 +16,6 @@ build.addSuppression(`Warning - [sass] The local CSS class 'ms-Grid' is not came
 gulp.task('dist', gulpSequence('clean', 'bundle', 'package-solution'));
 // Create clean development package
 gulp.task('dev', gulpSequence('clean', 'bundle', 'package-solution'));
-
-
-
 
 /**
  * Custom Framework Specific gulp tasks
