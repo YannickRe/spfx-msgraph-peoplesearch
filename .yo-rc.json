@@ -1,6 +1,6 @@
 {
   "@microsoft/generator-sharepoint": {
-    "version": "1.11.0",
+    "version": "1.12.1",
     "libraryName": "spfx-msgraph-peoplesearch",
     "libraryId": "98a8d9d1-47c4-477c-addd-ecae95b235cc",
     "environment": "spo",

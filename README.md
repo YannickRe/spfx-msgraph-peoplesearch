@@ -35,6 +35,10 @@ Version|Date|Comments
 2.1.1|September 13th, 2020|Small bugfix for issue when showBlank and SearchBox are combined + result count on pages > 1
 2.2.0|September 21st, 2020|Implemented batch loading of profile pictures
 2.2.1|October 4th, 2020|Switched from beta endpoint to v1.0, as all required features are now supported there
+2.2.2|February 12th, 2021|Cleaned up dependencies and imports. Upgraded to TypeScript 3.9. Fixed issue with dissapearing search box on publish.
+2.3.0|April 11th, 2021|Added feature to show empty on first page load instead of fetching all results.
+2.4.0|April 12th, 2021|Fixed race condition when combining querystring input on PnP Modern Search Box and dynamic data connection with this web part.
+2.5.0|May 13th, 2021|Updated to SPFX 1.12.1
 
 ## Disclaimer
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
