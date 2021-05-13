@@ -18,7 +18,7 @@ I wrote a blog post covering more if the inner workings, you can find it at [SPF
 Additionally, this web part has also been demoed on the [PnP Community call of September 10th, 2020](https://youtu.be/vxwzNCWIAWY?t=1342).
 
 ## Used SharePoint Framework Version 
-![drop](https://img.shields.io/badge/version-1.11-green.svg)
+![drop](https://img.shields.io/badge/version-1.12.1-green.svg)
 
 ## Applies to
 
@@ -26,33 +26,21 @@ Additionally, this web part has also been demoed on the [PnP Community call of S
 * [Microsoft Teams](https://products.office.com/en-US/microsoft-teams/group-chat-software) - Untested!!
 * [Office 365 tenant](https://docs.microsoft.com/sharepoint/dev/spfx/set-up-your-development-environment)
 
-## Version history
-
-Version|Date|Comments
--------|----|--------
-2.0.0|July 30, 2020|Initial release
-2.1.0|September 9th, 2020|Added built-in searchbox, option to disable LPC and pagination support
-2.1.1|September 13th, 2020|Small bugfix for issue when showBlank and SearchBox are combined + result count on pages > 1
-2.2.0|September 21st, 2020|Implemented batch loading of profile pictures
-2.2.1|October 4th, 2020|Switched from beta endpoint to v1.0, as all required features are now supported there
-2.2.2|February 12th, 2021|Cleaned up dependencies and imports. Upgraded to TypeScript 3.9. Fixed issue with dissapearing search box on publish.
-2.3.0|April 11th, 2021|Added feature to show empty on first page load instead of fetching all results.
-2.4.0|April 12th, 2021|Fixed race condition when combining querystring input on PnP Modern Search Box and dynamic data connection with this web part.
-2.5.0|May 13th, 2021|Updated to SPFX 1.12.1
-
 ## Disclaimer
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
 ---
 
 ## Minimal Path to Awesome
-
+Either download [the latest release](/YannickRe/spfx-msgraph-peoplesearch/releases/latest) OR build it yourself:
 - Clone this repository
 - in the command line run:
   - `npm install`
   - `gulp build`
   - `gulp bundle --ship`
   - `gulp package-solution --ship`
+
+Install the package:
 - Add to AppCatalog and deploy
 - Assign 'User.Read.All' delegated permissions to the 'SharePoint Online Client Extensibility Web Application Principal', with [CLI for Microsoft 365](https://pnp.github.io/cli-microsoft365/) or [PnP PowerShell](https://docs.microsoft.com/en-us/powershell/module/sharepoint-pnp/grant-pnptenantserviceprincipalpermission?view=sharepoint-ps)
 
