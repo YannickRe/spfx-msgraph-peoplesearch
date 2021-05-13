@@ -32,7 +32,7 @@ Additionally, this web part has also been demoed on the [PnP Community call of S
 ---
 
 ## Minimal Path to Awesome
-Either download [the latest release](/YannickRe/spfx-msgraph-peoplesearch/releases/latest) OR build it yourself:
+Either download [the latest release](https://github.com/YannickRe/spfx-msgraph-peoplesearch/releases/latest) OR build it yourself:
 - Clone this repository
 - in the command line run:
   - `npm install`
