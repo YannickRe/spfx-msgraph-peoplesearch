@@ -46,7 +46,7 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
 
     if (this.displayMode === DisplayMode.Edit) {
         const { Placeholder } = await import(
-            /* webpackChunkName: 'search-property-pane' */
+            /* webpackChunkName: 'msgraph-peoplesearch-property-pane' */
             '@pnp/spfx-controls-react/lib/Placeholder'
         );
         this._placeholder = Placeholder;
