@@ -5,16 +5,16 @@ import { ExtendedUser } from '../../models/ExtendedUser';
 
 export interface IPersonaCardProps {
   serviceScope: ServiceScope;
-  item?: ExtendedUser;
-  fieldsConfiguration?: IComponentFieldsConfiguration[];
-  personaSize?: string;
-  themeVariant?: IReadonlyTheme;
+  item: ExtendedUser;
+  fieldsConfiguration: IComponentFieldsConfiguration[];
+  personaSize: string;
+  themeVariant: IReadonlyTheme;
   showLPC: boolean;
-  lpcLibrary?: any;
+  lpcLibrary: any;
   // Individual content properties (i.e web component attributes)
+  upn?: string;
   text?: string;
   secondaryText?: string;
   tertiaryText?: string;
   optionalText?: string;
-  upn?: string;
 }

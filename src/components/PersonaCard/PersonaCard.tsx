@@ -38,10 +38,13 @@ export class PersonaCard extends React.Component<IPersonaCardProps,IPersonaCardS
         clientScenario: "PeopleWebPart",
         disableHover: false,
         hostAppPersonaInfo: {
-          PersonaType: "User"
+          PersonaType: "User",
+          PersonaAadObjectId: this.props.item.id,
+          PersonaDisplayName: this.props.item.displayName
         },
         serviceScope: this.props.serviceScope,
-        legacyUpn: processedProps.upn,
+        upn: this.props.item.userPrincipalName,
+        email: this.props.item.mail,
         onCardOpen: () => {
           console.log('LivePersonaCard Open');
         },
