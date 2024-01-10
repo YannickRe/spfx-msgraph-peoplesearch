@@ -39,7 +39,8 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
       errorMessage: '',
       hasError: false,
       page: 1,
-      searchParameter: ''
+      searchParameter: '',
+      isReset: false
     };
   }
 
@@ -58,7 +59,17 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
    */
   public async componentDidUpdate(prevProps: IPeopleSearchContainerProps, prevState: IPeopleSearchContainerState): Promise<void> {
     if (!isEqual(this.props.searchService, prevProps.searchService)) {
-      await this._fetchPeopleSearchResults(1, true);
+      if (this.state.isReset && this.props.hideResultsOnload) {
+        this.setState({
+          isReset: false,
+          results: [{
+            value: []
+          }]
+        });
+      }
+      else {
+        await this._fetchPeopleSearchResults(1, true);
+      }
     }
     else if (!isEqual(this.props, prevProps)) {
       if (this.state.hasError) {
@@ -147,7 +158,11 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
       const renderSearchResultTemplate = this.props.templateService.getTemplateComponent(this.props.selectedLayout, templateContext);
 
       if (this.props.searchParameterOption === SearchParameterOption.SearchBox) {
-        renderSearchBox = <PeopleSearchBox themeVariant={this.props.themeVariant} onSearch={async (searchQuery) => { await this.props.updateSearchParameter(searchQuery); }} searchInputValue={this.props.searchService.searchParameter} />;
+        renderSearchBox = <PeopleSearchBox themeVariant={this.props.themeVariant} onSearch={async (searchQuery, isReset) => { 
+          this.setState({
+            isReset: isReset
+          });
+          await this.props.updateSearchParameter(searchQuery); }} searchInputValue={this.props.searchService.searchParameter} />;
       }
 
       if (this.props.showPagination) {

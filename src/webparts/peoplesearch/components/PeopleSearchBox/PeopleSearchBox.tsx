@@ -71,7 +71,7 @@ export class PeopleSearchBox extends React.Component<IPeopleSearchBoxProps,IPeop
           }
 
           // Notify the dynamic data controller
-          await this.props.onSearch(query);
+          await this.props.onSearch(query, isReset);
       }
   }
 

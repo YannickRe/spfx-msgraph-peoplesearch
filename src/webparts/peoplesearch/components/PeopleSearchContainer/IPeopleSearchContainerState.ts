@@ -9,4 +9,5 @@ export interface IPeopleSearchContainerState {
   hasError: boolean;
   page: number;
   searchParameter: string;
+  isReset: boolean;
 }
