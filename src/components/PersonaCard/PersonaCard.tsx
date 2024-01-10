@@ -5,7 +5,7 @@ import {
   Persona,
   IPersonaSharedProps,
   ITheme
-} from 'office-ui-fabric-react';
+} from '@fluentui/react';
 import { TemplateService } from '../../services/TemplateService/TemplateService';
 import { isEmpty } from '@microsoft/sp-lodash-subset';
 

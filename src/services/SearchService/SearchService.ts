@@ -35,7 +35,7 @@ export class SearchService implements ISearchService {
   }
 
   public async searchUsers(): Promise<PageCollection<ExtendedUser>> {
-    const graphClient = await this._msGraphClientFactory.getClient();
+    const graphClient = await this._msGraphClientFactory.getClient('3');
 
     let resultQuery = graphClient
       .api('/users')
@@ -64,7 +64,7 @@ export class SearchService implements ISearchService {
   }
 
   public async fetchPage(pageLink: string): Promise<PageCollection<ExtendedUser>>  {
-    const graphClient = await this._msGraphClientFactory.getClient();
+    const graphClient = await this._msGraphClientFactory.getClient('3');
 
     let resultQuery = graphClient.api(pageLink).header("ConsistencyLevel", "eventual");
 
@@ -72,7 +72,7 @@ export class SearchService implements ISearchService {
   }
 
   public async fetchProfilePictures(users: ExtendedUser[]): Promise<IProfileImage> {
-    const graphClient = await this._msGraphClientFactory.getClient();
+    const graphClient = await this._msGraphClientFactory.getClient('3');
 
     let body: IGraphBatchRequestBody = { requests: [] };
         

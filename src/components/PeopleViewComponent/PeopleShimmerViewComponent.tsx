@@ -3,7 +3,7 @@ import ITemplateContext from '../../models/ITemplateContext';
 import { isEmpty } from '@microsoft/sp-lodash-subset';
 import styles from './PeopleViewComponent.module.scss';
 import * as strings from "PeopleSearchWebPartStrings";
-import { Shimmer, ShimmerElementType as ElemType, ShimmerElementsGroup, ITheme } from 'office-ui-fabric-react';
+import { Shimmer, ShimmerElementType as ElemType, ITheme, ShimmerElementsGroup } from '@fluentui/react';
 
 export interface IPeopleShimmerViewProps {
     templateContext: ITemplateContext;

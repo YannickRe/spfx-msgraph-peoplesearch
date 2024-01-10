@@ -10,7 +10,7 @@ import {
   IconButton,
   SearchBox,
   ITheme
-} from "office-ui-fabric-react";
+} from '@fluentui/react';
 
 export class PeopleSearchBox extends React.Component<IPeopleSearchBoxProps,IPeopleSearchBoxState> {
 

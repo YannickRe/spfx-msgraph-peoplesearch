@@ -15,7 +15,7 @@ import {
   IconButton,
   Overlay,
   ITheme
-} from "office-ui-fabric-react";
+} from '@fluentui/react';
 import { WebPartTitle } from "@pnp/spfx-controls-react/lib/WebPartTitle";
 import { DisplayMode } from "@microsoft/sp-core-library";
 import ResultsLayoutOption from "../../../../models/ResultsLayoutOption";
