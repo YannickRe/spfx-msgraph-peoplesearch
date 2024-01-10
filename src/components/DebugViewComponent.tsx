@@ -17,7 +17,7 @@ export interface IDebugViewState {
 
 export class DebugViewComponent extends React.Component<IDebugViewProps, IDebugViewState> {
     
-    public render() {
+    public render(): JSX.Element {
         return <Suspense fallback={""}><AceEditor
             width="100%"
             mode="json"

@@ -34,7 +34,7 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
   private _themeProvider: ThemeProvider;
   private _themeVariant: IReadonlyTheme;
   private _initComplete = false;
-  private _templatePropertyPaneOptions: IPropertyPaneField<any>[] = [];
+  private _templatePropertyPaneOptions: IPropertyPaneField<any>[] = []; // eslint-disable-line @typescript-eslint/no-explicit-any
 
   public async render(): Promise<void> {
 
@@ -95,15 +95,15 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
           updateWebPartTitle: (value: string) => {
             this.properties.webPartTitle = value;
           },
-          updateSearchParameter: (value: string) => {
+          updateSearchParameter: async(value: string) => {
             this.properties.searchParameter.setValue(value);
-            this.render();
+            await this.render();
           }
         } as IPeopleSearchContainerProps
       );
     } else {
       if (this.displayMode === DisplayMode.Edit) {
-          const placeholder: React.ReactElement<any> = React.createElement(
+          const placeholder: React.ReactElement<any> = React.createElement( // eslint-disable-line @typescript-eslint/no-explicit-any
               this._placeholder,
               {
                   iconName: strings.PlaceHolderEditLabel,
@@ -152,7 +152,7 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
 
     const templateParametersGroup = this._getTemplateFieldsGroup();
 
-    let propertyPaneGroups: (IPropertyPaneGroup | IPropertyPaneConditionalGroup)[] = [
+    const propertyPaneGroups: (IPropertyPaneGroup | IPropertyPaneConditionalGroup)[] = [
       {
         groupName: strings.QuerySettingsGroupName,
         groupFields: this._getQueryFields()
@@ -181,7 +181,7 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
     };
   }
 
-  protected async onPropertyPaneFieldChanged(propertyPath: string) {
+  protected async onPropertyPaneFieldChanged(propertyPath: string): Promise<void> {
     if (propertyPath.localeCompare('selectedLayout') === 0) {
       await this._initTemplate();
       this.context.propertyPane.refresh();
@@ -199,13 +199,13 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
       'searchParameter': {
         dynamicPropertyType: 'string'
       }
-    } as any as IWebPartPropertiesMetadata;
+    } as IWebPartPropertiesMetadata;
   }
 
   /**
    * Determines the group fields for search query options inside the property pane
    */
-  private _getSearchQueryFields(): IPropertyPaneField<any>[] {
+  private _getSearchQueryFields(): IPropertyPaneField<any>[] {// eslint-disable-line @typescript-eslint/no-explicit-any
     const searchParameterOptions = [
       {
           text: strings.NoneSearchParameterOption,
@@ -225,14 +225,14 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
       }
     ] as IPropertyPaneChoiceGroupOption[];
 
-    let searchQueryFields: IPropertyPaneField<any>[] = [
+    const searchQueryFields: IPropertyPaneField<any>[] = [// eslint-disable-line @typescript-eslint/no-explicit-any
       PropertyPaneChoiceGroup('searchParameterOption', {
         label: strings.SearchParameterOption,
         options: searchParameterOptions
       }),
     ];
 
-    if (this.properties.searchParameterOption == SearchParameterOption.Static) {
+    if (this.properties.searchParameterOption === SearchParameterOption.Static) {
       searchQueryFields.push(
         PropertyPaneTextField('searchParameter', {
           label: strings.SearchParameter
@@ -240,7 +240,7 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
       );
     }
 
-    if (this.properties.searchParameterOption == SearchParameterOption.Dynamic) {
+    if (this.properties.searchParameterOption === SearchParameterOption.Dynamic) {
       searchQueryFields.push(
         PropertyPaneDynamicFieldSet({
           label: strings.SearchParameter,
@@ -262,8 +262,8 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
   /**
    * Determines the group fields for query options inside the property pane
    */
-  private _getQueryFields(): IPropertyPaneField<any>[] {
-    let queryFields: IPropertyPaneField<any>[] = [
+  private _getQueryFields(): IPropertyPaneField<any>[] { // eslint-disable-line @typescript-eslint/no-explicit-any
+    const queryFields: IPropertyPaneField<any>[] = [ // eslint-disable-line @typescript-eslint/no-explicit-any
       PropertyPaneTextField('selectParameter', {
           label: strings.SelectParameter,
           multiline: true
@@ -301,7 +301,7 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
   /**
    * Determines the group fields for styling options inside the property pane
    */
-  private _getStylingFields(): IPropertyPaneField<any>[] {
+  private _getStylingFields(): IPropertyPaneField<any>[] {// eslint-disable-line @typescript-eslint/no-explicit-any
     const layoutOptions = [
         {
             iconProps: {
@@ -319,7 +319,7 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
         }
     ] as IPropertyPaneChoiceGroupOption[];
 
-    let stylingFields: IPropertyPaneField<any>[] = [
+    const stylingFields: IPropertyPaneField<any>[] = [ // eslint-disable-line @typescript-eslint/no-explicit-any
       PropertyPaneToggle('showPagination', {
         label: strings.ShowPaginationControl,
       }),
@@ -375,7 +375,7 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
   /**
   * Initializes the Web Part required properties if there are not present in the manifest (i.e. during an update scenario)
   */
-  private _initializeRequiredProperties() {
+  private _initializeRequiredProperties(): void {
     this.properties.selectedLayout = this.properties.selectedLayout ?? ResultsLayoutOption.People;
     this.properties.searchParameterOption = this.properties.searchParameterOption ?? SearchParameterOption.None;
     this.properties.templateParameters = this.properties.templateParameters ? this.properties.templateParameters : {};
@@ -392,29 +392,29 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
     this._themeVariant = this._themeProvider.tryGetTheme();
 
     // Register a handler to be notified if the theme variant changes
-    this._themeProvider.themeChangedEvent.add(this, this._handleThemeChangedEvent.bind(this));
+    this._themeProvider.themeChangedEvent.add(this, eventArgs => this._handleThemeChangedEvent(eventArgs));
   }
 
   /**
    * Update the current theme variant reference and re-render.
    * @param args The new theme
    */
-  private _handleThemeChangedEvent(args: ThemeChangedEventArgs): void {
+  private async _handleThemeChangedEvent(args: ThemeChangedEventArgs): Promise<void> {
       if (!isEqual(this._themeVariant, args.theme)) {
           this._themeVariant = args.theme;
-          this.render();
+          await this.render();
       }
   }
 
     /**
    * Opens the Web Part property pane
    */
-  private _setupWebPart() {
+  private _setupWebPart(): void {
       this.context.propertyPane.open();
   }
 
   private _validateNumber(value: string): string {
-    let number = parseInt(value);
+    const number = parseInt(value);
     if (isNaN(number)) {
         return strings.InvalidNumberIntervalMessage;
     }

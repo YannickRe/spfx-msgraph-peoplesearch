@@ -13,7 +13,7 @@ export interface IPeopleShimmerViewState {
 }
 
 export class PeopleShimmerViewComponent extends React.Component<IPeopleShimmerViewProps, IPeopleShimmerViewState> {
-    public render() {
+    public render(): JSX.Element {
         const ctx = this.props.templateContext;
         let mainElement: JSX.Element = null;
         let resultCountElement: JSX.Element = null;
@@ -26,7 +26,7 @@ export class PeopleShimmerViewComponent extends React.Component<IPeopleShimmerVi
                 };
 
                 resultCountElement = <div className={styles.resultCount}>
-                        <span className="shimmer line" style={shimmerLineStyle}></span>
+                        <span className="shimmer line" style={shimmerLineStyle} />
                     </div>;
             }
 
@@ -35,7 +35,7 @@ export class PeopleShimmerViewComponent extends React.Component<IPeopleShimmerVi
             }
 
             let personaSize: number;
-            switch (parseInt(ctx.personaSize)) {
+            switch (parseInt(ctx.personaSize as string)) {
                 case 11:
                     personaSize = 32;
                     break;
@@ -57,7 +57,7 @@ export class PeopleShimmerViewComponent extends React.Component<IPeopleShimmerVi
             }
 
             const personaCards = [];
-            for (let i = 0; i < ctx.pageSize; i++) {
+            for (let i = 0; i < (ctx.pageSize as number); i++) {
                 personaCards.push(<div className={styles.documentCardItem} key={i}>
                     <div className={styles.personaCard}>
                         {this._getPersonaCardShimmers(personaSize)}

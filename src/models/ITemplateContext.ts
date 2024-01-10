@@ -14,7 +14,7 @@ interface ITemplateContext {
     peopleFields?: IComponentFieldsConfiguration[];
     themeVariant?: IReadonlyTheme;
     serviceScope: ServiceScope;
-    [key:string]: any;
+    [key:string]: IComponentFieldsConfiguration[] | number | boolean | PageCollection<ExtendedUser> | IReadonlyTheme | ServiceScope;
 }
 
 export default ITemplateContext;

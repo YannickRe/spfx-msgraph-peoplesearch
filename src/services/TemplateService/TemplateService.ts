@@ -9,8 +9,7 @@ import { DebugViewComponent, IDebugViewProps } from '../../components/DebugViewC
 import ITemplateContext from '../../models/ITemplateContext';
 import { PeopleViewComponent, IPeopleViewProps } from '../../components/PeopleViewComponent/PeopleViewComponent';
 import { IPeopleShimmerViewProps, PeopleShimmerViewComponent } from '../../components/PeopleViewComponent/PeopleShimmerViewComponent';
-
-const PEOPLE_RESULT_SOURCEID = 'b09a7990-05ea-4af9-81ef-edfab16c4e31';
+import { ExtendedUser } from '../../models/ExtendedUser';
 
 export interface IComponentFieldsConfiguration {
 
@@ -38,7 +37,7 @@ export class TemplateService {
      * @param onUpdateAvailableProperties callback when the list of managed properties is fetched by the control (Optional)
      * @param availableProperties the list of available managed properties already fetched once (Optional)
      */
-    public getTemplateParameters(layout: ResultsLayoutOption, properties: IPeopleSearchWebPartProps): IPropertyPaneField<any>[] {
+    public getTemplateParameters(layout: ResultsLayoutOption, properties: IPeopleSearchWebPartProps): IPropertyPaneField<any>[] { // eslint-disable-line @typescript-eslint/no-explicit-any
 
         switch (layout) {
             case ResultsLayoutOption.People:
@@ -92,21 +91,21 @@ export class TemplateService {
      * @param itemAsString the item context as stringified object
      * @param themeVariant the current theem variant
      */
-    public static processFieldsConfiguration<T>(fieldsConfiguration: IComponentFieldsConfiguration[], item: any): T {
+    public static processFieldsConfiguration<T>(fieldsConfiguration: IComponentFieldsConfiguration[], item: ExtendedUser): T {
 
-        let processedProps = {};
+        const processedProps = {};
 
         // Use configuration
         fieldsConfiguration.map(configuration => {
 
-            let processedValue = item[configuration.value];
+            const processedValue = item[configuration.value];
             processedProps[configuration.field] = processedValue;
         });
 
         return processedProps as T;
     }
 
-    private _getPeopleLayoutFields(properties: IPeopleSearchWebPartProps): IPropertyPaneField<any>[] {
+    private _getPeopleLayoutFields(properties: IPeopleSearchWebPartProps): IPropertyPaneField<any>[] { // eslint-disable-line @typescript-eslint/no-explicit-any
         
         // Setup default values
         if (!properties.templateParameters.peopleFields) {

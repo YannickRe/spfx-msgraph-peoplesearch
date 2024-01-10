@@ -21,7 +21,7 @@ export interface IPeopleViewState {
 }
 
 export class PeopleViewComponent extends React.Component<IPeopleViewProps, IPeopleViewState> {
-    private sharedLibrary: any;
+    private sharedLibrary: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
     constructor(props: IPeopleViewProps) {
       super(props);
@@ -32,12 +32,12 @@ export class PeopleViewComponent extends React.Component<IPeopleViewProps, IPeop
   
       this.sharedLibrary = null;
 
-      if (Environment.type !== EnvironmentType.Local && props.templateContext.showLPC) {
-        this._loadSpfxSharedLibrary();
+      if (Environment.type !== EnvironmentType.Local && this.props.templateContext.showLPC) {
+        this._loadSpfxSharedLibrary(); // eslint-disable-line @typescript-eslint/no-floating-promises
       }
     }
   
-    private async _loadSpfxSharedLibrary() {
+    private async _loadSpfxSharedLibrary(): Promise<void> {
       if (!this.state.isComponentLoaded) {
           try {
               this.sharedLibrary = await SPComponentLoader.loadComponentById(LIVE_PERSONA_COMPONENT_ID);   
@@ -52,7 +52,7 @@ export class PeopleViewComponent extends React.Component<IPeopleViewProps, IPeop
       }        
     }
 
-    public render() {
+    public render(): JSX.Element {
         const ctx = this.props.templateContext;
         let mainElement: JSX.Element = null;
         let resultCountElement: JSX.Element = null;
@@ -73,7 +73,7 @@ export class PeopleViewComponent extends React.Component<IPeopleViewProps, IPeop
             for (let i = 0; i < ctx.items.value.length; i++) {
                 personaCards.push(<div className={styles.documentCardItem} key={i}>
                     <div className={styles.personaCard}>
-                        <PersonaCard serviceScope={ctx.serviceScope} fieldsConfiguration={ctx.peopleFields} item={ctx.items.value[i]} themeVariant={ctx.themeVariant} personaSize={ctx.personaSize} showLPC={ctx.showLPC} lpcLibrary={this.sharedLibrary} />
+                        <PersonaCard serviceScope={ctx.serviceScope} fieldsConfiguration={ctx.peopleFields} item={ctx.items.value[i]} themeVariant={ctx.themeVariant} personaSize={ctx.personaSize as string} showLPC={ctx.showLPC} lpcLibrary={this.sharedLibrary} />
                     </div>
                 </div>);
             }

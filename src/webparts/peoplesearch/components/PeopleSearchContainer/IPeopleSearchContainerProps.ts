@@ -2,7 +2,7 @@ import { DisplayMode, ServiceScope } from "@microsoft/sp-core-library";
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import { ISearchService } from "../../../../services/SearchService";
 import ResultsLayoutOption from "../../../../models/ResultsLayoutOption";
-import { TemplateService } from "../../../../services/TemplateService/TemplateService";
+import { TemplateService, IComponentFieldsConfiguration } from "../../../../services/TemplateService/TemplateService";
 import SearchParameterOption from "../../../../models/SearchParameterOption";
 
 export interface IPeopleSearchContainerProps {
@@ -56,11 +56,11 @@ export interface IPeopleSearchContainerProps {
     /**
      * Template parameters from Web Part property pane
      */
-    templateParameters: { [key:string]: any };
+    templateParameters: { [key:string]: IComponentFieldsConfiguration[] | number };
 
     serviceScope: ServiceScope;
     
     updateWebPartTitle: (value: string) => void;
 
-    updateSearchParameter: (value: string) => void;
+    updateSearchParameter: (value: string) => Promise<void>;
 }

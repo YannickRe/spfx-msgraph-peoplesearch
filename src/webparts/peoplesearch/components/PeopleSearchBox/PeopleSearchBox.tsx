@@ -53,25 +53,25 @@ export class PeopleSearchBox extends React.Component<IPeopleSearchBoxProps,IPeop
    * Handler when a user enters new keywords
    * @param queryText The query text entered by the user
    */
-  public async _onSearch(queryText: string, isReset: boolean = false) {
+  public async _onSearch(queryText: string, isReset: boolean = false): Promise<void> {
 
       // Don't send empty value
       if (queryText || isReset) {
 
-          let query = queryText;
+          const query = queryText;
 
           this.setState({
               searchInputValue: queryText,
               showClearButton: !isReset
           });
 
-          let element = document.activeElement as HTMLElement;
+          const element = document.activeElement as HTMLElement;
           if (element) {
               element.blur();
           }
 
           // Notify the dynamic data controller
-          this.props.onSearch(query);
+          await this.props.onSearch(query);
       }
   }
 

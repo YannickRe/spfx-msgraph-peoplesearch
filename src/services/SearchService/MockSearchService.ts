@@ -29,7 +29,7 @@ export class MockSearchService implements ISearchService {
     public async searchUsers(): Promise<PageCollection<ExtendedUser>> {
         const timeout = Math.floor(Math.random() * (1000)) + 1;
         
-        let resultData: PageCollection<ExtendedUser> = this.getResultData("1");
+        const resultData: PageCollection<ExtendedUser> = this.getResultData("1");
 
         return new Promise((resolve) => {
             setTimeout(() => {
@@ -41,7 +41,7 @@ export class MockSearchService implements ISearchService {
     public async fetchPage(currentPage: string): Promise<PageCollection<ExtendedUser>> {
         const timeout = Math.floor(Math.random() * (1000)) + 1;
         
-        let resultData: PageCollection<ExtendedUser> = this.getResultData(currentPage);
+        const resultData: PageCollection<ExtendedUser> = this.getResultData(currentPage);
 
         return new Promise((resolve) => {
             setTimeout(() => {
@@ -55,7 +55,7 @@ export class MockSearchService implements ISearchService {
      }
 
     private getResultData(currentPage: string): PageCollection<ExtendedUser> {
-        let resultData: PageCollection<ExtendedUser> = {
+        const resultData: PageCollection<ExtendedUser> = {
             "@odata.count": peopleSearchResults["@odata.count"],
             value: peopleSearchResults.value as ExtendedUser[]
         };
@@ -66,9 +66,9 @@ export class MockSearchService implements ISearchService {
         //TODO: Implement orderBy
 
         //Pagination
-        let totalPages = Math.ceil(resultData["@odata.count"] / this.pageSize);
-        let currentPageNumber = parseInt(currentPage);
-        let currentPageZeroBased = currentPageNumber-1;
+        const totalPages = Math.ceil(resultData["@odata.count"] / this.pageSize);
+        const currentPageNumber = parseInt(currentPage);
+        const currentPageZeroBased = currentPageNumber-1;
         peopleResults = peopleResults.slice(currentPageZeroBased * this.pageSize, (currentPageZeroBased * this.pageSize) + this.pageSize);
 
         if (currentPageNumber < totalPages) {

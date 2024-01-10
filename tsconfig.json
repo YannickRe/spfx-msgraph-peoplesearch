@@ -12,7 +12,8 @@
     "skipLibCheck": true,
     "outDir": "lib",
     "inlineSources": false,
-
+    "noImplicitAny": false,
+    
     "strictNullChecks": false,
     "noUnusedLocals": false,
     "resolveJsonModule": true,

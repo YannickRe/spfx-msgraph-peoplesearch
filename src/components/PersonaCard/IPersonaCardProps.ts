@@ -10,7 +10,7 @@ export interface IPersonaCardProps {
   personaSize: string;
   themeVariant: IReadonlyTheme;
   showLPC: boolean;
-  lpcLibrary: any;
+  lpcLibrary: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   // Individual content properties (i.e web component attributes)
   upn?: string;
   text?: string;

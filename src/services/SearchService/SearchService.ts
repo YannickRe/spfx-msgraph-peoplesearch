@@ -66,7 +66,7 @@ export class SearchService implements ISearchService {
   public async fetchPage(pageLink: string): Promise<PageCollection<ExtendedUser>>  {
     const graphClient = await this._msGraphClientFactory.getClient('3');
 
-    let resultQuery = graphClient.api(pageLink).header("ConsistencyLevel", "eventual");
+    const resultQuery = graphClient.api(pageLink).header("ConsistencyLevel", "eventual");
 
     return await resultQuery.get();
   }
@@ -74,16 +74,16 @@ export class SearchService implements ISearchService {
   public async fetchProfilePictures(users: ExtendedUser[]): Promise<IProfileImage> {
     const graphClient = await this._msGraphClientFactory.getClient('3');
 
-    let body: IGraphBatchRequestBody = { requests: [] };
+    const body: IGraphBatchRequestBody = { requests: [] };
         
     users.forEach((user) => {
-      let requestUrl: string = `/users/${user.id}/photo/$value`;
+      const requestUrl: string = `/users/${user.id}/photo/$value`;
       body.requests.push({ id: user.id.toString(), method: 'GET', url: requestUrl });
     });
 
-    var response: IGraphBatchResponseBody = await graphClient.api('$batch').version('v1.0').post(body);
+    const response: IGraphBatchResponseBody = await graphClient.api('$batch').version('v1.0').post(body);
 
-    var results: IProfileImage = {};
+    const results: IProfileImage = {};
     response.responses.forEach(r => {
       if (r.status === 200) {
         results[r.id] = `data:${r.headers["Content-Type"]};base64,${r.body}`;

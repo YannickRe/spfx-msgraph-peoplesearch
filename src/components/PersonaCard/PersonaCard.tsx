@@ -28,8 +28,8 @@ export class PersonaCard extends React.Component<IPersonaCardProps,IPersonaCardS
    * @returns
    * @memberof PersonaCard
    */
-  private _LivePersonaCard() {
-    let processedProps: IPersonaCardProps = this.determinePersonaConfig();
+  private _LivePersonaCard() { // eslint-disable-line @typescript-eslint/explicit-function-return-type
+    const processedProps: IPersonaCardProps = this.determinePersonaConfig();
 
     return React.createElement(
       this.props.lpcLibrary.LivePersonaCard,

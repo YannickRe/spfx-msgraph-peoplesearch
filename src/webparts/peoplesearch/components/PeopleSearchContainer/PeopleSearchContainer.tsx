@@ -43,7 +43,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
     };
   }
 
-  public async componentDidMount() {
+  public async componentDidMount(): Promise<void> {
     if (!this.props.hideResultsOnload) {
       await this._fetchPeopleSearchResults(1, true);
     }
@@ -56,7 +56,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
    * @param {IPeopleSearchContainerState} prevState
    * @memberof Directory
    */
-  public async componentDidUpdate(prevProps: IPeopleSearchContainerProps, prevState: IPeopleSearchContainerState) {
+  public async componentDidUpdate(prevProps: IPeopleSearchContainerProps, prevState: IPeopleSearchContainerState): Promise<void> {
     if (!isEqual(this.props.searchService, prevProps.searchService)) {
       await this._fetchPeopleSearchResults(1, true);
     }
@@ -144,10 +144,10 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
       } as ITemplateContext;
       templateContext = { ...templateContext, ...this.props.templateParameters };
 
-      let renderSearchResultTemplate = this.props.templateService.getTemplateComponent(this.props.selectedLayout, templateContext);
+      const renderSearchResultTemplate = this.props.templateService.getTemplateComponent(this.props.selectedLayout, templateContext);
 
       if (this.props.searchParameterOption === SearchParameterOption.SearchBox) {
-        renderSearchBox = <PeopleSearchBox themeVariant={this.props.themeVariant} onSearch={(searchQuery) => { this.props.updateSearchParameter(searchQuery); }} searchInputValue={this.props.searchService.searchParameter} />;
+        renderSearchBox = <PeopleSearchBox themeVariant={this.props.themeVariant} onSearch={async (searchQuery) => { await this.props.updateSearchParameter(searchQuery); }} searchInputValue={this.props.searchService.searchParameter} />;
       }
 
       if (this.props.showPagination) {
@@ -193,18 +193,18 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
     );
   }
 
-  private hasPreviousPage(): Boolean {
+  private hasPreviousPage(): boolean {
     return this.state.page > 1;
   }
 
-  private hasNextPage(): Boolean {
+  private hasNextPage(): boolean {
     return this.state.results.length > this.state.page || !isEmpty(this.state.results[this.state.results.length - 1]["@odata.nextLink"]);
   }
 
   private async _fetchPeopleSearchResults(page: number, reset: boolean = false): Promise<void> {
     try {
       if (page === 1 && reset || isEmpty(this.state.results) || isEmpty(this.state.results[0]) || isEmpty(this.state.results[0].value)) {
-        let localSearchParameter = this.props.searchService.searchParameter;
+        const localSearchParameter = this.props.searchService.searchParameter;
         this.setState({
           areResultsLoading: true,
           hasError: false,
@@ -212,7 +212,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
           searchParameter: localSearchParameter
         });
 
-        let searchResults = await this.props.searchService.searchUsers();
+        const searchResults = await this.props.searchService.searchUsers();
 
         this.setState(prevState => {
           if (prevState.searchParameter === localSearchParameter)
@@ -233,8 +233,8 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
             hasError: false,
             errorMessage: ""
           });
-          let nextLink = this.state.results[this.state.results.length - 1]["@odata.nextLink"];
-          let searchResults = await this.props.searchService.fetchPage(nextLink);
+          const nextLink = this.state.results[this.state.results.length - 1]["@odata.nextLink"];
+          const searchResults = await this.props.searchService.fetchPage(nextLink);
           this.setState(prevState => ({
             results: [...prevState.results, searchResults],
             areResultsLoading: false,
@@ -268,8 +268,8 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
 
     for (let i = 0; i < usersWithoutPhotosBatch.length; i++) {
       let isUpdated = false;
-      let pictures = await this.props.searchService.fetchProfilePictures(usersWithoutPhotosBatch[i]);
-      let ids = Object.keys(pictures);
+      const pictures = await this.props.searchService.fetchProfilePictures(usersWithoutPhotosBatch[i]);
+      const ids = Object.keys(pictures);
       
       items.value = items.value.map(u => {
         if (ids.indexOf(u.id) !== -1) {
