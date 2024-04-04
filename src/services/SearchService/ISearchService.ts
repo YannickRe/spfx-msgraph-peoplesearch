@@ -3,12 +3,13 @@ import { IProfileImage } from '../../models/IProfileImage';
 import { PageCollection } from '../../models/PageCollection';
 
 export interface ISearchService {
-    selectParameter: string[];
-    filterParameter: string;
-    orderByParameter: string;
-    searchParameter: string;
-    pageSize: number;
-    searchUsers(): Promise<PageCollection<ExtendedUser>>;
-    fetchPage(pageLink: string): Promise<PageCollection<ExtendedUser>>;
-    fetchProfilePictures(users: ExtendedUser[]): Promise<IProfileImage>;
+  selectParameter: string[];
+  filterParameter: string;
+  orderByParameter: string;
+  searchParameter: string;
+  enableUmlautReplacement: boolean;
+  pageSize: number;
+  searchUsers(): Promise<PageCollection<ExtendedUser>>;
+  fetchPage(pageLink: string): Promise<PageCollection<ExtendedUser>>;
+  fetchProfilePictures(users: ExtendedUser[]): Promise<IProfileImage>;
 }

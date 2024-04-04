@@ -10,7 +10,8 @@
     "build": "gulp bundle",
     "clean": "gulp clean",
     "preversion": "node ./tools/pre-version.js",
-    "postversion": "gulp dist"
+    "postversion": "gulp dist",
+    "serve": "gulp bundle --custom-serve --max_old_space_size=4096 && fast-serve"
   },
   "dependencies": {
     "@fluentui/react": "^8.106.4",
