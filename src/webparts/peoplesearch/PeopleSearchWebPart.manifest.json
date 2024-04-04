@@ -7,25 +7,30 @@
   "manifestVersion": 2,
   "requiresCustomScript": false,
   "supportsFullBleed": true,
-  "supportedHosts": ["SharePointWebPart","TeamsTab", "SharePointFullPage"],
+  "supportedHosts": ["SharePointWebPart", "TeamsTab", "SharePointFullPage"],
   "supportsThemeVariants": true,
-  "preconfiguredEntries": [{
-    "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
-    "group": { "default": "SPFx WebParts" },
-    "title": { "default": "People Search" },
-    "description": { "default": "Search for people within your organization, through Microsoft Graph" },
-    "officeFabricIconFontName": "ProfileSearch",
-    "properties": {
-      "selectParameter": "",
-      "filterParameter": "",
-      "orderByParameter": "",
-      "pageSize": 10,
-      "webPartTitle": "People Search",
-      "showPagination": true,
-      "showLPC": true,
-      "showBlank": true,
-      "showResultsCount": true,
-      "hideResultsOnload": false
+  "preconfiguredEntries": [
+    {
+      "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
+      "group": { "default": "SPFx WebParts" },
+      "title": { "default": "People Search" },
+      "description": {
+        "default": "Search for people within your organization, through Microsoft Graph"
+      },
+      "officeFabricIconFontName": "ProfileSearch",
+      "properties": {
+        "selectParameter": "",
+        "filterParameter": "",
+        "orderByParameter": "",
+        "pageSize": 10,
+        "webPartTitle": "People Search",
+        "showPagination": true,
+        "showLPC": true,
+        "showBlank": true,
+        "showResultsCount": true,
+        "hideResultsOnload": false,
+        "enableUmlautReplacement": true
+      }
     }
-  }]
+  ]
 }

@@ -1,9 +1,20 @@
-import * as React from "react";
-import * as ReactDom from "react-dom";
-import { Version, Environment, EnvironmentType } from "@microsoft/sp-core-library";
-import { ThemeProvider, IReadonlyTheme, ThemeChangedEventArgs } from '@microsoft/sp-component-base';
-import { BaseClientSideWebPart, IWebPartPropertiesMetadata } from "@microsoft/sp-webpart-base";
-import { DisplayMode } from "@microsoft/sp-core-library";
+import * as React from 'react';
+import * as ReactDom from 'react-dom';
+import {
+  Version,
+  Environment,
+  EnvironmentType,
+} from '@microsoft/sp-core-library';
+import {
+  ThemeProvider,
+  IReadonlyTheme,
+  ThemeChangedEventArgs,
+} from '@microsoft/sp-component-base';
+import {
+  BaseClientSideWebPart,
+  IWebPartPropertiesMetadata,
+} from '@microsoft/sp-webpart-base';
+import { DisplayMode } from '@microsoft/sp-core-library';
 import { isEqual } from '@microsoft/sp-lodash-subset';
 import {
   IPropertyPaneConfiguration,
@@ -16,16 +27,23 @@ import {
   IPropertyPaneConditionalGroup,
   DynamicDataSharedDepth,
   PropertyPaneDynamicField,
-  PropertyPaneDynamicFieldSet
-} from "@microsoft/sp-property-pane";
+  PropertyPaneDynamicFieldSet,
+} from '@microsoft/sp-property-pane';
 import update from 'immutability-helper';
-import * as strings from "PeopleSearchWebPartStrings";
-import { IPeopleSearchWebPartProps } from "./IPeopleSearchWebPartProps";
-import { ISearchService, MockSearchService, SearchService } from "../../services/SearchService";
-import { IPeopleSearchContainerProps, PeopleSearchContainer } from "./components/PeopleSearchContainer";
-import ResultsLayoutOption from "../../models/ResultsLayoutOption";
-import { TemplateService } from "../../services/TemplateService/TemplateService";
-import SearchParameterOption from "../../models/SearchParameterOption";
+import * as strings from 'PeopleSearchWebPartStrings';
+import { IPeopleSearchWebPartProps } from './IPeopleSearchWebPartProps';
+import {
+  ISearchService,
+  MockSearchService,
+  SearchService,
+} from '../../services/SearchService';
+import {
+  IPeopleSearchContainerProps,
+  PeopleSearchContainer,
+} from './components/PeopleSearchContainer';
+import ResultsLayoutOption from '../../models/ResultsLayoutOption';
+import { TemplateService } from '../../services/TemplateService/TemplateService';
+import SearchParameterOption from '../../models/SearchParameterOption';
 
 export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSearchWebPartProps> {
   private _searchService: ISearchService;
@@ -37,19 +55,18 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
   private _templatePropertyPaneOptions: IPropertyPaneField<any>[] = []; // eslint-disable-line @typescript-eslint/no-explicit-any
 
   public async render(): Promise<void> {
-
     if (!this._initComplete) {
-        return;
+      return;
     }
 
     await this._initTemplate();
 
     if (this.displayMode === DisplayMode.Edit) {
-        const { Placeholder } = await import(
-            /* webpackChunkName: 'msgraph-peoplesearch-property-pane' */
-            '@pnp/spfx-controls-react/lib/Placeholder'
-        );
-        this._placeholder = Placeholder;
+      const { Placeholder } = await import(
+        /* webpackChunkName: 'msgraph-peoplesearch-property-pane' */
+        '@pnp/spfx-controls-react/lib/Placeholder'
+      );
+      this._placeholder = Placeholder;
     }
 
     this.renderCompleted();
@@ -64,58 +81,71 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
     let renderElement = null;
 
     if (this._isWebPartConfigured()) {
-
-      const searchParameter: string | undefined = this.properties.searchParameter.tryGetValue();
+      const searchParameter: string | undefined =
+        this.properties.searchParameter.tryGetValue();
 
       this._searchService = update(this._searchService, {
-        selectParameter: { $set: this.properties.selectParameter ? [...Array.from(new Set([...(this.properties.selectParameter.split(',')), ...['id', 'userPrincipalName', 'mail', 'displayName']]))] : [] },
+        selectParameter: {
+          $set: this.properties.selectParameter
+            ? [
+                ...Array.from(
+                  new Set([
+                    ...this.properties.selectParameter.split(','),
+                    ...['id', 'userPrincipalName', 'mail', 'displayName'],
+                  ])
+                ),
+              ]
+            : [],
+        },
         filterParameter: { $set: this.properties.filterParameter },
         orderByParameter: { $set: this.properties.orderByParameter },
         searchParameter: { $set: searchParameter },
-        pageSize: { $set: parseInt(this.properties.pageSize) }
+        enableUmlautReplacement: {
+          $set: this.properties.enableUmlautReplacement,
+        },
+        pageSize: { $set: parseInt(this.properties.pageSize) },
       });
 
-      renderElement = React.createElement(
-        PeopleSearchContainer,
-        {
-          webPartTitle: this.properties.webPartTitle,
-          displayMode: this.displayMode,
-          showBlank: this.properties.showBlank,
-          hideResultsOnload: this.properties.hideResultsOnload,
-          showResultsCount: this.properties.showResultsCount,
-          showPagination: this.properties.showPagination,
-          showLPC: this.properties.showLPC,
-          searchParameterOption: this.properties.searchParameterOption,
-          searchService: this._searchService,
-          templateService: this._templateService,
-          templateParameters: this.properties.templateParameters,
-          selectedLayout: this.properties.selectedLayout,
-          themeVariant: this._themeVariant,
-          serviceScope: this.context.serviceScope,
-          updateWebPartTitle: (value: string) => {
-            this.properties.webPartTitle = value;
-          },
-          updateSearchParameter: async(value: string) => {
-            this.properties.searchParameter.setValue(value);
-            await this.render();
-          }
-        } as IPeopleSearchContainerProps
-      );
+      renderElement = React.createElement(PeopleSearchContainer, {
+        webPartTitle: this.properties.webPartTitle,
+        enableUmlautReplacement: this.properties.enableUmlautReplacement,
+        displayMode: this.displayMode,
+        showBlank: this.properties.showBlank,
+        hideResultsOnload: this.properties.hideResultsOnload,
+        showResultsCount: this.properties.showResultsCount,
+        showPagination: this.properties.showPagination,
+        showLPC: this.properties.showLPC,
+        searchParameterOption: this.properties.searchParameterOption,
+        searchService: this._searchService,
+        templateService: this._templateService,
+        templateParameters: this.properties.templateParameters,
+        selectedLayout: this.properties.selectedLayout,
+        themeVariant: this._themeVariant,
+        serviceScope: this.context.serviceScope,
+        updateWebPartTitle: (value: string) => {
+          this.properties.webPartTitle = value;
+        },
+        updateSearchParameter: async (value: string) => {
+          this.properties.searchParameter.setValue(value);
+          await this.render();
+        },
+      } as IPeopleSearchContainerProps);
     } else {
       if (this.displayMode === DisplayMode.Edit) {
-          const placeholder: React.ReactElement<any> = React.createElement( // eslint-disable-line @typescript-eslint/no-explicit-any
-              this._placeholder,
-              {
-                  iconName: strings.PlaceHolderEditLabel,
-                  iconText: strings.PlaceHolderIconText,
-                  description: strings.PlaceHolderDescription,
-                  buttonLabel: strings.PlaceHolderConfigureBtnLabel,
-                  onConfigure: this._setupWebPart.bind(this)
-              }
-          );
-          renderElement = placeholder;
+        const placeholder: React.ReactElement<any> = React.createElement(
+          // eslint-disable-line @typescript-eslint/no-explicit-any
+          this._placeholder,
+          {
+            iconName: strings.PlaceHolderEditLabel,
+            iconText: strings.PlaceHolderIconText,
+            description: strings.PlaceHolderDescription,
+            buttonLabel: strings.PlaceHolderConfigureBtnLabel,
+            onConfigure: this._setupWebPart.bind(this),
+          }
+        );
+        renderElement = placeholder;
       } else {
-          renderElement = React.createElement('div', null);
+        renderElement = React.createElement('div', null);
       }
     }
 
@@ -130,7 +160,9 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
     if (Environment.type in [EnvironmentType.Local, EnvironmentType.Test]) {
       this._searchService = new MockSearchService();
     } else {
-      this._searchService = new SearchService(this.context.msGraphClientFactory);
+      this._searchService = new SearchService(
+        this.context.msGraphClientFactory
+      );
     }
 
     this._templateService = new TemplateService();
@@ -145,26 +177,28 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
   }
 
   protected get dataVersion(): Version {
-    return Version.parse("1.0");
+    return Version.parse('1.0');
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-
     const templateParametersGroup = this._getTemplateFieldsGroup();
 
-    const propertyPaneGroups: (IPropertyPaneGroup | IPropertyPaneConditionalGroup)[] = [
+    const propertyPaneGroups: (
+      | IPropertyPaneGroup
+      | IPropertyPaneConditionalGroup
+    )[] = [
       {
         groupName: strings.QuerySettingsGroupName,
-        groupFields: this._getQueryFields()
+        groupFields: this._getQueryFields(),
       },
       {
         groupName: strings.SearchQuerySettingsGroupName,
-        groupFields: this._getSearchQueryFields()
+        groupFields: this._getSearchQueryFields(),
       },
       {
         groupName: strings.StylingSettingsGroupName,
         groupFields: this._getStylingFields(),
-      }
+      },
     ];
 
     if (templateParametersGroup) {
@@ -175,83 +209,98 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
       pages: [
         {
           groups: propertyPaneGroups,
-          displayGroupsAsAccordion: true
-        }
-      ]
+          displayGroupsAsAccordion: true,
+        },
+      ],
     };
   }
 
-  protected async onPropertyPaneFieldChanged(propertyPath: string): Promise<void> {
+  protected async onPropertyPaneFieldChanged(
+    propertyPath: string
+  ): Promise<void> {
     if (propertyPath.localeCompare('selectedLayout') === 0) {
       await this._initTemplate();
       this.context.propertyPane.refresh();
     }
 
     if (propertyPath.localeCompare('searchParameterOption') === 0) {
-      if (this.properties.searchParameterOption === SearchParameterOption.None) {
-        this.properties.searchParameter.setValue("");
+      if (
+        this.properties.searchParameterOption === SearchParameterOption.None
+      ) {
+        this.properties.searchParameter.setValue('');
       }
     }
   }
 
   protected get propertiesMetadata(): IWebPartPropertiesMetadata {
     return {
-      'searchParameter': {
-        dynamicPropertyType: 'string'
-      }
+      searchParameter: {
+        dynamicPropertyType: 'string',
+      },
     } as IWebPartPropertiesMetadata;
   }
 
   /**
    * Determines the group fields for search query options inside the property pane
    */
-  private _getSearchQueryFields(): IPropertyPaneField<any>[] {// eslint-disable-line @typescript-eslint/no-explicit-any
+  private _getSearchQueryFields(): IPropertyPaneField<any>[] {
+    // eslint-disable-line @typescript-eslint/no-explicit-any
     const searchParameterOptions = [
       {
-          text: strings.NoneSearchParameterOption,
-          key: SearchParameterOption.None
+        text: strings.NoneSearchParameterOption,
+        key: SearchParameterOption.None,
       },
       {
         text: strings.BoxSearchParameterOption,
         key: SearchParameterOption.SearchBox,
       },
       {
-          text: strings.StaticSearchParameterOption,
-          key: SearchParameterOption.Static
+        text: strings.StaticSearchParameterOption,
+        key: SearchParameterOption.Static,
       },
       {
-          text: strings.DynamicSearchParameterOption,
-          key: SearchParameterOption.Dynamic
-      }
+        text: strings.DynamicSearchParameterOption,
+        key: SearchParameterOption.Dynamic,
+      },
     ] as IPropertyPaneChoiceGroupOption[];
 
-    const searchQueryFields: IPropertyPaneField<any>[] = [// eslint-disable-line @typescript-eslint/no-explicit-any
+    const searchQueryFields: IPropertyPaneField<any>[] = [
+      // eslint-disable-line @typescript-eslint/no-explicit-any
       PropertyPaneChoiceGroup('searchParameterOption', {
         label: strings.SearchParameterOption,
-        options: searchParameterOptions
+        options: searchParameterOptions,
+      }),
+      PropertyPaneToggle('enableUmlautReplacement', {
+        label: strings.EnableUmlautReplacement,
+        onText: 'On',
+        offText: 'Off',
       }),
     ];
 
-    if (this.properties.searchParameterOption === SearchParameterOption.Static) {
+    if (
+      this.properties.searchParameterOption === SearchParameterOption.Static
+    ) {
       searchQueryFields.push(
         PropertyPaneTextField('searchParameter', {
-          label: strings.SearchParameter
+          label: strings.SearchParameter,
         })
       );
     }
 
-    if (this.properties.searchParameterOption === SearchParameterOption.Dynamic) {
+    if (
+      this.properties.searchParameterOption === SearchParameterOption.Dynamic
+    ) {
       searchQueryFields.push(
         PropertyPaneDynamicFieldSet({
           label: strings.SearchParameter,
           fields: [
             PropertyPaneDynamicField('searchParameter', {
-              label: strings.SearchParameter
-            })
+              label: strings.SearchParameter,
+            }),
           ],
           sharedConfiguration: {
-            depth: DynamicDataSharedDepth.Property
-          }
+            depth: DynamicDataSharedDepth.Property,
+          },
         })
       );
     }
@@ -262,19 +311,21 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
   /**
    * Determines the group fields for query options inside the property pane
    */
-  private _getQueryFields(): IPropertyPaneField<any>[] { // eslint-disable-line @typescript-eslint/no-explicit-any
-    const queryFields: IPropertyPaneField<any>[] = [ // eslint-disable-line @typescript-eslint/no-explicit-any
+  private _getQueryFields(): IPropertyPaneField<any>[] {
+    // eslint-disable-line @typescript-eslint/no-explicit-any
+    const queryFields: IPropertyPaneField<any>[] = [
+      // eslint-disable-line @typescript-eslint/no-explicit-any
       PropertyPaneTextField('selectParameter', {
-          label: strings.SelectParameter,
-          multiline: true
+        label: strings.SelectParameter,
+        multiline: true,
       }),
       PropertyPaneTextField('filterParameter', {
         label: strings.FilterParameter,
-        multiline: true
+        multiline: true,
       }),
       PropertyPaneTextField('orderByParameter', {
         label: strings.OrderByParameter,
-        multiline: true
+        multiline: true,
       }),
       PropertyPaneTextField('pageSize', {
         label: strings.PageSizeParameter,
@@ -283,64 +334,70 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
         deferredValidationTime: 300,
         onGetErrorMessage: (value: string) => {
           return this._validateNumber(value);
-        } 
+        },
       }),
     ];
 
     return queryFields;
   }
 
-    /**
+  /**
    * Init the template according to the property pane current configuration
    * @returns the template content as a string
    */
   private async _initTemplate(): Promise<void> {
-    this._templatePropertyPaneOptions = this._templateService.getTemplateParameters(this.properties.selectedLayout, this.properties);
+    this._templatePropertyPaneOptions =
+      this._templateService.getTemplateParameters(
+        this.properties.selectedLayout,
+        this.properties
+      );
   }
 
   /**
    * Determines the group fields for styling options inside the property pane
    */
-  private _getStylingFields(): IPropertyPaneField<any>[] {// eslint-disable-line @typescript-eslint/no-explicit-any
+  private _getStylingFields(): IPropertyPaneField<any>[] {
+    // eslint-disable-line @typescript-eslint/no-explicit-any
     const layoutOptions = [
-        {
-            iconProps: {
-                officeFabricIconFontName: 'People'
-            },
-            text: strings.PeopleLayoutOption,
-            key: ResultsLayoutOption.People
+      {
+        iconProps: {
+          officeFabricIconFontName: 'People',
         },
-        {
-            iconProps: {
-                officeFabricIconFontName: 'Code'
-            },
-            text: strings.DebugLayoutOption,
-            key: ResultsLayoutOption.Debug
-        }
+        text: strings.PeopleLayoutOption,
+        key: ResultsLayoutOption.People,
+      },
+      {
+        iconProps: {
+          officeFabricIconFontName: 'Code',
+        },
+        text: strings.DebugLayoutOption,
+        key: ResultsLayoutOption.Debug,
+      },
     ] as IPropertyPaneChoiceGroupOption[];
 
-    const stylingFields: IPropertyPaneField<any>[] = [ // eslint-disable-line @typescript-eslint/no-explicit-any
+    const stylingFields: IPropertyPaneField<any>[] = [
+      // eslint-disable-line @typescript-eslint/no-explicit-any
       PropertyPaneToggle('showPagination', {
         label: strings.ShowPaginationControl,
       }),
       PropertyPaneToggle('showBlank', {
-          label: strings.ShowBlankLabel,
-          checked: this.properties.showBlank,
+        label: strings.ShowBlankLabel,
+        checked: this.properties.showBlank,
       }),
       PropertyPaneToggle('hideResultsOnload', {
         label: strings.HideResultsOnloadLabel,
         checked: this.properties.hideResultsOnload,
-    }),
+      }),
       PropertyPaneToggle('showResultsCount', {
-          label: strings.ShowResultsCountLabel,
-          checked: this.properties.showResultsCount,
+        label: strings.ShowResultsCountLabel,
+        checked: this.properties.showResultsCount,
       }),
       PropertyPaneToggle('showLPC', {
         label: strings.ShowLivePersonaCard,
       }),
       PropertyPaneChoiceGroup('selectedLayout', {
-          label: strings.ResultsLayoutLabel,
-          options: layoutOptions
+        label: strings.ResultsLayoutLabel,
+        options: layoutOptions,
       }),
     ];
 
@@ -351,34 +408,37 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
    * Gets template parameters fields
    */
   private _getTemplateFieldsGroup(): IPropertyPaneGroup {
-
     let templateFieldsGroup: IPropertyPaneGroup = null;
 
     if (this._templatePropertyPaneOptions.length > 0) {
-        templateFieldsGroup = {
-            groupFields: this._templatePropertyPaneOptions,
-            isCollapsed: false,
-            groupName: strings.TemplateParameters.TemplateParametersGroupName
-        };
+      templateFieldsGroup = {
+        groupFields: this._templatePropertyPaneOptions,
+        isCollapsed: false,
+        groupName: strings.TemplateParameters.TemplateParametersGroupName,
+      };
     }
 
     return templateFieldsGroup;
   }
 
   /**
-  * Checks if all webpart properties have been configured
-  */ 
+   * Checks if all webpart properties have been configured
+   */
   private _isWebPartConfigured(): boolean {
     return true;
   }
 
   /**
-  * Initializes the Web Part required properties if there are not present in the manifest (i.e. during an update scenario)
-  */
+   * Initializes the Web Part required properties if there are not present in the manifest (i.e. during an update scenario)
+   */
   private _initializeRequiredProperties(): void {
-    this.properties.selectedLayout = this.properties.selectedLayout ?? ResultsLayoutOption.People;
-    this.properties.searchParameterOption = this.properties.searchParameterOption ?? SearchParameterOption.None;
-    this.properties.templateParameters = this.properties.templateParameters ? this.properties.templateParameters : {};
+    this.properties.selectedLayout =
+      this.properties.selectedLayout ?? ResultsLayoutOption.People;
+    this.properties.searchParameterOption =
+      this.properties.searchParameterOption ?? SearchParameterOption.None;
+    this.properties.templateParameters = this.properties.templateParameters
+      ? this.properties.templateParameters
+      : {};
   }
 
   /**
@@ -386,40 +446,46 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
    */
   private _initThemeVariant(): void {
     // Consume the new ThemeProvider service
-    this._themeProvider = this.context.serviceScope.consume(ThemeProvider.serviceKey);
+    this._themeProvider = this.context.serviceScope.consume(
+      ThemeProvider.serviceKey
+    );
 
     // If it exists, get the theme variant
     this._themeVariant = this._themeProvider.tryGetTheme();
 
     // Register a handler to be notified if the theme variant changes
-    this._themeProvider.themeChangedEvent.add(this, eventArgs => this._handleThemeChangedEvent(eventArgs));
+    this._themeProvider.themeChangedEvent.add(this, (eventArgs) =>
+      this._handleThemeChangedEvent(eventArgs)
+    );
   }
 
   /**
    * Update the current theme variant reference and re-render.
    * @param args The new theme
    */
-  private async _handleThemeChangedEvent(args: ThemeChangedEventArgs): Promise<void> {
-      if (!isEqual(this._themeVariant, args.theme)) {
-          this._themeVariant = args.theme;
-          await this.render();
-      }
+  private async _handleThemeChangedEvent(
+    args: ThemeChangedEventArgs
+  ): Promise<void> {
+    if (!isEqual(this._themeVariant, args.theme)) {
+      this._themeVariant = args.theme;
+      await this.render();
+    }
   }
 
-    /**
+  /**
    * Opens the Web Part property pane
    */
   private _setupWebPart(): void {
-      this.context.propertyPane.open();
+    this.context.propertyPane.open();
   }
 
   private _validateNumber(value: string): string {
     const number = parseInt(value);
     if (isNaN(number)) {
-        return strings.InvalidNumberIntervalMessage;
+      return strings.InvalidNumberIntervalMessage;
     }
     if (number < 1 || number > 999) {
-        return strings.InvalidNumberIntervalMessage;
+      return strings.InvalidNumberIntervalMessage;
     }
     return '';
   }

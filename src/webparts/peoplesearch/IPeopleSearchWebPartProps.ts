@@ -1,7 +1,7 @@
-import ResultsLayoutOption from "../../models/ResultsLayoutOption";
+import ResultsLayoutOption from '../../models/ResultsLayoutOption';
 import { DynamicProperty } from '@microsoft/sp-component-base';
-import SearchParameterOption from "../../models/SearchParameterOption";
-import { IComponentFieldsConfiguration } from "../../services/TemplateService/TemplateService";
+import SearchParameterOption from '../../models/SearchParameterOption';
+import { IComponentFieldsConfiguration } from '../../services/TemplateService/TemplateService';
 
 export interface IPeopleSearchWebPartProps {
   selectParameter: string;
@@ -17,5 +17,8 @@ export interface IPeopleSearchWebPartProps {
   hideResultsOnload: boolean;
   selectedLayout: ResultsLayoutOption;
   webPartTitle: string;
-  templateParameters: { [key: string]: IComponentFieldsConfiguration[] | number };
+  templateParameters: {
+    [key: string]: IComponentFieldsConfiguration[] | number;
+  };
+  enableUmlautReplacement: boolean;
 }

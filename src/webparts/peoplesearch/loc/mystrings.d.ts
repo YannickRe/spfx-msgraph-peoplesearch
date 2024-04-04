@@ -29,19 +29,20 @@ declare interface IPeopleSearchWebPartStrings {
   ShowBlankLabel: string;
   ShowBlankEditInfoMessage: string;
   StylingSettingsGroupName: string;
+  EnableUmlautReplacement: string;
   TemplateParameters: {
     TemplateParametersGroupName: string;
     ManagePeopleFieldsLabel: string;
     ManagePeopleFieldsPanelDescriptionLabel: string;
     PlaceholderNameFieldLabel: string;
     PlaceholderValueFieldLabel: string;
-    PersonaSizeOptionsLabel: string,
+    PersonaSizeOptionsLabel: string;
     PersonaSizeExtraSmall: string;
     PersonaSizeSmall: string;
     PersonaSizeRegular: string;
     PersonaSizeLarge: string;
     PersonaSizeExtraLarge: string;
-  }
+  };
 }
 
 declare module 'PeopleSearchWebPartStrings' {
