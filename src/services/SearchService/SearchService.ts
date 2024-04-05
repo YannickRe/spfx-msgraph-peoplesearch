@@ -6,6 +6,7 @@ import { ExtendedUser } from '../../models/ExtendedUser';
 import { IGraphBatchResponseBody } from './IGraphBatchResponseBody';
 import { IGraphBatchRequestBody } from './IGraphBatchRequestBody';
 import { IProfileImage } from '../../models/IProfileImage';
+import { IComponentFieldsConfiguration } from '../TemplateService/TemplateService';
 
 export class SearchService implements ISearchService {
   private _msGraphClientFactory: MSGraphClientFactory;
@@ -74,7 +75,53 @@ export class SearchService implements ISearchService {
       .replace(/ß/g, 'ss');
   };
 
-  public async searchUsers(): Promise<PageCollection<ExtendedUser>> {
+  // public async searchUsers(): Promise<PageCollection<ExtendedUser>> {
+  //   const graphClient = await this._msGraphClientFactory.getClient('3');
+
+  //   let resultQuery = graphClient
+  //     .api('/users')
+  //     .version('v1.0')
+  //     .header('ConsistencyLevel', 'eventual')
+  //     .count(true)
+  //     .top(this.pageSize);
+
+  //   if (!isEmpty(this.selectParameter)) {
+  //     resultQuery = resultQuery.select(this.selectParameter);
+  //   }
+
+  //   if (!isEmpty(this.filterParameter)) {
+  //     resultQuery = resultQuery.filter(this.filterParameter);
+  //   }
+
+  //   if (!isEmpty(this.orderByParameter)) {
+  //     resultQuery = resultQuery.orderby(this.orderByParameter);
+  //   }
+
+  //   if (!isEmpty(this.searchParameter)) {
+  //     let resultSearchParameter = this.searchParameter;
+  //     if (this.enableUmlautReplacement) {
+  //       resultSearchParameter = this.replaceUmlauts(this.searchParameter);
+  //     }
+  //     // make [key: string]: string | number
+  //     const querySearchText = `displayName:${resultSearchParameter}`;
+
+  //     //! TODO: UPDATE HERE
+  //     // resultQuery = resultQuery.query({
+  //     //   $search: `"displayName:${resultSearchParameter
+  //     //     .replace('&', '')
+  //     //     .replace('&amp;', '')}"`,
+  //     // });
+  //     resultQuery = resultQuery.query({
+  //       $search: querySearchText,
+  //     });
+  //     console.log('resultQuery', resultQuery);
+  //   }
+
+  //   return await resultQuery.get();
+  // }
+  public async searchUsers(templateParameters: {
+    [key: string]: IComponentFieldsConfiguration[] | number;
+  }): Promise<PageCollection<ExtendedUser>> {
     const graphClient = await this._msGraphClientFactory.getClient('3');
 
     let resultQuery = graphClient
@@ -88,25 +135,30 @@ export class SearchService implements ISearchService {
       resultQuery = resultQuery.select(this.selectParameter);
     }
 
-    if (!isEmpty(this.filterParameter)) {
-      resultQuery = resultQuery.filter(this.filterParameter);
+    let filterQueries = [];
+    if (!isEmpty(this.searchParameter)) {
+      let searchParameter = this.searchParameter;
+      if (this.enableUmlautReplacement) {
+        searchParameter = this.replaceUmlauts(this.searchParameter);
+      }
+
+      (
+        templateParameters.peopleFields as IComponentFieldsConfiguration[]
+      ).forEach((field) => {
+        if (field.searchable) {
+          filterQueries.push(`"${field.value}:${searchParameter}"`);
+        }
+      });
+    }
+
+    // Join filter queries with or
+    if (filterQueries.length > 0) {
+      this.filterParameter = filterQueries.join(' OR ');
+      resultQuery = resultQuery.search(this.filterParameter);
     }
 
     if (!isEmpty(this.orderByParameter)) {
       resultQuery = resultQuery.orderby(this.orderByParameter);
-    }
-
-    if (!isEmpty(this.searchParameter)) {
-      let resultSearchParameter = this.searchParameter;
-      if (this.enableUmlautReplacement) {
-        resultSearchParameter = this.replaceUmlauts(this.searchParameter);
-      }
-
-      resultQuery = resultQuery.query({
-        $search: `"displayName:${resultSearchParameter
-          .replace('&', '')
-          .replace('&amp;', '')}"`,
-      });
     }
 
     return await resultQuery.get();
