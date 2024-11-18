@@ -80,6 +80,7 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
         {
           webPartTitle: this.properties.webPartTitle,
           displayMode: this.displayMode,
+          showBackground: this.properties.showBackground,
           showBlank: this.properties.showBlank,
           hideResultsOnload: this.properties.hideResultsOnload,
           showResultsCount: this.properties.showResultsCount,
@@ -320,6 +321,10 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
     ] as IPropertyPaneChoiceGroupOption[];
 
     const stylingFields: IPropertyPaneField<any>[] = [ // eslint-disable-line @typescript-eslint/no-explicit-any
+      PropertyPaneToggle('showBackground', {
+        label: strings.ShowBackgroundLabel,
+        checked: this.properties.showBackground
+      }),
       PropertyPaneToggle('showPagination', {
         label: strings.ShowPaginationControl,
       }),

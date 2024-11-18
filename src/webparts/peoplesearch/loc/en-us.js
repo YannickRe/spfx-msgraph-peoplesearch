@@ -43,5 +43,6 @@ define([], function() {
       "PersonaSizeLarge": "Large",
       "PersonaSizeExtraLarge": "Extra large",
     },
+    "ShowBackgroundLabel": "Allow section background to be visible"
   }
 });

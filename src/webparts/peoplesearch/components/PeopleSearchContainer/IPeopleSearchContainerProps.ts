@@ -24,6 +24,11 @@ export interface IPeopleSearchContainerProps {
     showResultsCount: boolean;
 
     /**
+     * Webpart has transparent background allowing section background to be visible
+     */
+    showBackground: boolean;
+
+    /**
      * Show nothing if no result
      */
     showBlank: boolean;
