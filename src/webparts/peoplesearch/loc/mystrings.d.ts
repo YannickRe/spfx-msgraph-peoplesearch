@@ -36,6 +36,7 @@ declare interface IPeopleSearchWebPartStrings {
     ManagePeopleFieldsPanelDescriptionLabel: string;
     PlaceholderNameFieldLabel: string;
     PlaceholderValueFieldLabel: string;
+    PlaceholderSearchableFieldLabel: string;
     PersonaSizeOptionsLabel: string;
     PersonaSizeExtraSmall: string;
     PersonaSizeSmall: string;

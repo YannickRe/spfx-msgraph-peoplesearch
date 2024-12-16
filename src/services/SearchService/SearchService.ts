@@ -75,50 +75,6 @@ export class SearchService implements ISearchService {
       .replace(/ß/g, 'ss');
   };
 
-  // public async searchUsers(): Promise<PageCollection<ExtendedUser>> {
-  //   const graphClient = await this._msGraphClientFactory.getClient('3');
-
-  //   let resultQuery = graphClient
-  //     .api('/users')
-  //     .version('v1.0')
-  //     .header('ConsistencyLevel', 'eventual')
-  //     .count(true)
-  //     .top(this.pageSize);
-
-  //   if (!isEmpty(this.selectParameter)) {
-  //     resultQuery = resultQuery.select(this.selectParameter);
-  //   }
-
-  //   if (!isEmpty(this.filterParameter)) {
-  //     resultQuery = resultQuery.filter(this.filterParameter);
-  //   }
-
-  //   if (!isEmpty(this.orderByParameter)) {
-  //     resultQuery = resultQuery.orderby(this.orderByParameter);
-  //   }
-
-  //   if (!isEmpty(this.searchParameter)) {
-  //     let resultSearchParameter = this.searchParameter;
-  //     if (this.enableUmlautReplacement) {
-  //       resultSearchParameter = this.replaceUmlauts(this.searchParameter);
-  //     }
-  //     // make [key: string]: string | number
-  //     const querySearchText = `displayName:${resultSearchParameter}`;
-
-  //     //! TODO: UPDATE HERE
-  //     // resultQuery = resultQuery.query({
-  //     //   $search: `"displayName:${resultSearchParameter
-  //     //     .replace('&', '')
-  //     //     .replace('&amp;', '')}"`,
-  //     // });
-  //     resultQuery = resultQuery.query({
-  //       $search: querySearchText,
-  //     });
-  //     console.log('resultQuery', resultQuery);
-  //   }
-
-  //   return await resultQuery.get();
-  // }
   public async searchUsers(templateParameters: {
     [key: string]: IComponentFieldsConfiguration[] | number;
   }): Promise<PageCollection<ExtendedUser>> {
@@ -126,8 +82,8 @@ export class SearchService implements ISearchService {
 
     let resultQuery = graphClient
       .api('/users')
-      .version('v1.0')
-      .header('ConsistencyLevel', 'eventual')
+      .version("v1.0")
+      .header("ConsistencyLevel", "eventual")
       .count(true)
       .top(this.pageSize);
 
@@ -135,11 +91,19 @@ export class SearchService implements ISearchService {
       resultQuery = resultQuery.select(this.selectParameter);
     }
 
-    let filterQueries = [];
+    if (!isEmpty(this.filterParameter)) {
+      resultQuery = resultQuery.filter(this.filterParameter);
+    }
+
+    if (!isEmpty(this.orderByParameter)) {
+      resultQuery = resultQuery.orderby(this.orderByParameter);
+    }
+
     if (!isEmpty(this.searchParameter)) {
-      let searchParameter = this.searchParameter;
+      const filterQueries = [];
+      let searchParameter = this.searchParameter.replace('&', '').replace('&amp;', '');
       if (this.enableUmlautReplacement) {
-        searchParameter = this.replaceUmlauts(this.searchParameter);
+        searchParameter = this.replaceUmlauts(searchParameter);
       }
 
       (
@@ -149,16 +113,12 @@ export class SearchService implements ISearchService {
           filterQueries.push(`"${field.value}:${searchParameter}"`);
         }
       });
-    }
 
-    // Join filter queries with or
-    if (filterQueries.length > 0) {
-      this.filterParameter = filterQueries.join(' OR ');
-      resultQuery = resultQuery.search(this.filterParameter);
-    }
-
-    if (!isEmpty(this.orderByParameter)) {
-      resultQuery = resultQuery.orderby(this.orderByParameter);
+      // Join filter queries with or
+      if (filterQueries.length > 0) {
+        this.filterParameter = filterQueries.join(' OR ');
+        resultQuery = resultQuery.search(this.filterParameter);
+      }
     }
 
     return await resultQuery.get();
