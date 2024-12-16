@@ -74,7 +74,7 @@ export class SearchService implements ISearchService {
 
     if (!isEmpty(this.searchParameter)) {
       const filterQueries = [];
-      let searchParameter = this.searchParameter.replace('&', '').replace('&amp;', '');
+      let searchParameter = encodeURIComponent(this.searchParameter.replace('&', '').replace('&amp;', '').replace('%23', '').replace('#', ''));
       if (this.enableUmlautReplacement) {
         searchParameter = this.replaceUmlauts(searchParameter);
       }

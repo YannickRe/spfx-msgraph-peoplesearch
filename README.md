@@ -21,7 +21,7 @@ Additionally, this web part has also been demoed on the [PnP Community call of S
 
 ## Used SharePoint Framework Version
 
-![drop](https://img.shields.io/badge/version-1.12.1-green.svg)
+![drop](https://img.shields.io/badge/version-1.18.2-green.svg)
 
 ## Applies to
 
