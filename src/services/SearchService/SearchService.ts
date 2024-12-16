@@ -1,11 +1,12 @@
 import { ISearchService } from "./ISearchService";
-import { MSGraphClientFactory } from '@microsoft/sp-http';
+import { MSGraphClientFactory } from "@microsoft/sp-http";
 import { isEmpty } from "@microsoft/sp-lodash-subset";
 import { PageCollection } from "../../models/PageCollection";
 import { ExtendedUser } from "../../models/ExtendedUser";
 import { IGraphBatchResponseBody } from "./IGraphBatchResponseBody";
 import { IGraphBatchRequestBody } from "./IGraphBatchRequestBody";
 import { IProfileImage } from "../../models/IProfileImage";
+import { IComponentFieldsConfiguration } from "../TemplateService/TemplateService";
 
 export class SearchService implements ISearchService {
   private _msGraphClientFactory: MSGraphClientFactory;
@@ -13,6 +14,7 @@ export class SearchService implements ISearchService {
   private _filterParameter: string;
   private _orderByParameter: string;
   private _searchParameter: string;
+  private _enableUmlautReplacement: boolean;
   private _pageSize: number;
 
   public get selectParameter(): string[] { return this._selectParameter; }
@@ -27,6 +29,9 @@ export class SearchService implements ISearchService {
   public get searchParameter(): string { return this._searchParameter; }
   public set searchParameter(value: string) { this._searchParameter = value; }
 
+  public get enableUmlautReplacement(): boolean { return this._enableUmlautReplacement; }
+  public set enableUmlautReplacement(value: boolean) { this._enableUmlautReplacement = value; }
+
   public get pageSize(): number { return this._pageSize; }
   public set pageSize(value: number) { this._pageSize = value; }
 
@@ -34,7 +39,18 @@ export class SearchService implements ISearchService {
     this._msGraphClientFactory = msGraphClientFactory;
   }
 
-  public async searchUsers(): Promise<PageCollection<ExtendedUser>> {
+  private replaceUmlauts = (text: string): string => {
+    return text
+      .replace(/ä/g, 'ae')
+      .replace(/ö/g, 'oe')
+      .replace(/ü/g, 'ue')
+      .replace(/Ä/g, 'Ae')
+      .replace(/Ö/g, 'Oe')
+      .replace(/Ü/g, 'Ue')
+      .replace(/ß/g, 'ss');
+  };
+
+  public async searchUsers(templateParameters: { [key: string]: IComponentFieldsConfiguration[] | number; }): Promise<PageCollection<ExtendedUser>> {
     const graphClient = await this._msGraphClientFactory.getClient('3');
 
     let resultQuery = graphClient
@@ -57,7 +73,25 @@ export class SearchService implements ISearchService {
     }
 
     if (!isEmpty(this.searchParameter)) {
-      resultQuery = resultQuery.query({ $search: `"displayName:${this.searchParameter.replace('&', '').replace('&amp;', '')}"` });
+      const filterQueries = [];
+      let searchParameter = this.searchParameter.replace('&', '').replace('&amp;', '');
+      if (this.enableUmlautReplacement) {
+        searchParameter = this.replaceUmlauts(searchParameter);
+      }
+
+      (
+        templateParameters.peopleFields as IComponentFieldsConfiguration[]
+      ).forEach((field) => {
+        if (field.searchable) {
+          filterQueries.push(`"${field.value}:${searchParameter}"`);
+        }
+      });
+
+      // Join filter queries with or
+      if (filterQueries.length > 0) {
+        this.filterParameter = filterQueries.join(' OR ');
+        resultQuery = resultQuery.search(this.filterParameter);
+      }
     }
 
     return await resultQuery.get();

@@ -19,4 +19,5 @@ export interface IPeopleSearchWebPartProps {
   selectedLayout: ResultsLayoutOption;
   webPartTitle: string;
   templateParameters: { [key: string]: IComponentFieldsConfiguration[] | number };
+  enableUmlautReplacement: boolean;
 }

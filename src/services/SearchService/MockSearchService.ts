@@ -9,6 +9,7 @@ export class MockSearchService implements ISearchService {
     private _filterParameter: string;
     private _orderByParameter: string;
     private _searchParameter: string;
+    private _enableUmlautReplacement: boolean;
     private _pageSize: number;
   
     public get selectParameter(): string[] { return this._selectParameter; }
@@ -22,6 +23,9 @@ export class MockSearchService implements ISearchService {
 
     public get searchParameter(): string { return this._searchParameter; }
     public set searchParameter(value: string) { this._searchParameter = value; }
+
+    public get enableUmlautReplacement(): boolean { return this._enableUmlautReplacement; }
+    public set enableUmlautReplacement(value: boolean) { this._enableUmlautReplacement = value; }
 
     public get pageSize(): number { return this._pageSize; }
     public set pageSize(value: number) { this._pageSize = value; }

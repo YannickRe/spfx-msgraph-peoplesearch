@@ -24,12 +24,12 @@
         "title": "People Search Feature",
         "description": "The feature that activates elements of the spfx-msgraph-peoplesearch solution.",
         "id": "e09916bd-8e2e-4220-8d05-60d3a6f4d98b",
-        "version": "2.8.1.0"
+        "version": "2.8.3.0"
       }
     ],
     "name": "Microsoft Graph People Search",
     "id": "98a8d9d1-47c4-477c-addd-ecae95b235cc",
-    "version": "2.8.1.0",
+    "version": "2.8.3.0",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false

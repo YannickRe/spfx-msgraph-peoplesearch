@@ -228,7 +228,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
           searchParameter: localSearchParameter
         });
 
-        const searchResults = await this.props.searchService.searchUsers();
+        const searchResults = await this.props.searchService.searchUsers(this.props.templateParameters);
 
         this.setState(prevState => {
           if (prevState.searchParameter === localSearchParameter)

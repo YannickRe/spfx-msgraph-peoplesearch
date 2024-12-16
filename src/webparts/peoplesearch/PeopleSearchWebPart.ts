@@ -72,6 +72,7 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
         filterParameter: { $set: this.properties.filterParameter },
         orderByParameter: { $set: this.properties.orderByParameter },
         searchParameter: { $set: searchParameter },
+        enableUmlautReplacement: { $set: this.properties.enableUmlautReplacement },
         pageSize: { $set: parseInt(this.properties.pageSize) }
       });
 
@@ -79,6 +80,7 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
         PeopleSearchContainer,
         {
           webPartTitle: this.properties.webPartTitle,
+          enableUmlautReplacement: this.properties.enableUmlautReplacement,
           displayMode: this.displayMode,
           showBackground: this.properties.showBackground,
           showBlank: this.properties.showBlank,
@@ -230,6 +232,9 @@ export default class PeopleSearchWebPart extends BaseClientSideWebPart<IPeopleSe
       PropertyPaneChoiceGroup('searchParameterOption', {
         label: strings.SearchParameterOption,
         options: searchParameterOptions
+      }),
+      PropertyPaneToggle('enableUmlautReplacement', {
+        label: strings.EnableUmlautReplacement
       }),
     ];
 

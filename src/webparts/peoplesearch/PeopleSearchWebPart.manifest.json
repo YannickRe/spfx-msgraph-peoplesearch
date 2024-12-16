@@ -25,7 +25,8 @@
       "showLPC": true,
       "showBlank": true,
       "showResultsCount": true,
-      "hideResultsOnload": false
+      "hideResultsOnload": false,
+      "enableUmlautReplacement": false
     }
   }]
 }

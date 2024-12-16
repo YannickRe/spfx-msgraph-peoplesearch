@@ -27,6 +27,12 @@ export interface IComponentFieldsConfiguration {
      * The value of the field
      */
     value: string;
+
+    /**
+     * Whether the field is searchable
+     */
+    searchable: boolean;
+
 }
 
 export class TemplateService {
@@ -111,11 +117,11 @@ export class TemplateService {
         if (!properties.templateParameters.peopleFields) {
 
             properties.templateParameters.peopleFields = [
-                { name: 'User Principal Name', field: 'upn', value: "userPrincipalName" },
-                { name: 'Primary Text', field: 'text', value: "displayName" },
-                { name: 'Secondary Text', field: 'secondaryText', value: "jobTitle" },
-                { name: 'Tertiary Text', field: 'tertiaryText',  value: "mail" },
-                { name: 'Optional Text', field: 'optionalText',  value: "mobilePhone" }
+                { name: 'User Principal Name', field: 'upn', value: "userPrincipalName", searchable: false },
+                { name: 'Primary Text', field: 'text', value: "displayName", searchable: true },
+                { name: 'Secondary Text', field: 'secondaryText', value: "jobTitle", searchable: false },
+                { name: 'Tertiary Text', field: 'tertiaryText',  value: "mail", searchable: false },
+                { name: 'Optional Text', field: 'optionalText',  value: "mobilePhone", searchable: false }
             ] as IComponentFieldsConfiguration[];
         }
 
@@ -144,7 +150,12 @@ export class TemplateService {
                     {
                         id: 'value',
                         type: CustomCollectionFieldType.string,
-                        title: strings.TemplateParameters.PlaceholderValueFieldLabel,
+                        title: strings.TemplateParameters.PlaceholderValueFieldLabel
+                    },
+                    {
+                        id: 'searchable',
+                        type: CustomCollectionFieldType.boolean,
+                        title: strings.TemplateParameters.PlaceholderSearchableFieldLabel
                     }
                 ]
             }),
