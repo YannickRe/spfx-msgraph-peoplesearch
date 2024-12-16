@@ -43,7 +43,7 @@ declare interface IPeopleSearchWebPartStrings {
     PersonaSizeRegular: string;
     PersonaSizeLarge: string;
     PersonaSizeExtraLarge: string;
-  },
+  };
   ShowBackgroundLabel: string;
 }
 
