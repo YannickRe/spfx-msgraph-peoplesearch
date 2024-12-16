@@ -13,6 +13,7 @@ export interface IPeopleSearchWebPartProps {
   showPagination: boolean;
   showLPC: boolean;
   showResultsCount: boolean;
+  showBackground: boolean;
   showBlank: boolean;
   hideResultsOnload: boolean;
   selectedLayout: ResultsLayoutOption;

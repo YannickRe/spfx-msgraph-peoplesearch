@@ -118,6 +118,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
           resultCount: this.state.resultCount,
           showPagination: this.props.showPagination,
           showResultsCount: this.props.showResultsCount,
+          showBackground: this.props.showBackground,
           showBlank: this.props.showBlank && this.props.searchParameterOption !== SearchParameterOption.SearchBox,
           showLPC: this.props.showLPC,
           themeVariant: this.props.themeVariant,
@@ -199,7 +200,7 @@ export class PeopleSearchContainer extends React.Component<IPeopleSearchContaine
     }
 
     return (
-      <div style={{backgroundColor: semanticColors.bodyBackground}}>
+      <div style={{backgroundColor: this.props.showBackground ? 'transparent' : semanticColors.bodyBackground}}>
         <div className={styles.peopleSearchWebPart}>
           {renderWebPartTitle}
           {renderShimmerElements ? renderShimmerElements : renderWebPartContent}
