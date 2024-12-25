@@ -139,7 +139,7 @@ export class TemplateService {
                 disableItemCreation: true,
                 disableItemDeletion: true,
                 label: strings.TemplateParameters.ManagePeopleFieldsLabel,
-                value: properties.templateParameters.peopleFields,
+                value: properties.templateParameters.peopleFields as IComponentFieldsConfiguration[],
                 fields: [
                     {
                         id: 'name',
